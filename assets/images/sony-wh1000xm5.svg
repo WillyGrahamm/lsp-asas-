@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="800" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#27272a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <path d="M265 258c0-86 60-154 135-154s135 68 135 154" stroke="#d4d4d8" stroke-width="22" stroke-linecap="round"/>
+  <rect x="234" y="240" width="64" height="128" rx="30" fill="#3f3f46" stroke="#a1a1aa" stroke-width="4"/>
+  <rect x="502" y="240" width="64" height="128" rx="30" fill="#3f3f46" stroke="#a1a1aa" stroke-width="4"/>
+  <text x="400" y="424" fill="#ffffff" font-family="sans-serif" font-size="25" font-weight="700" text-anchor="middle">Sony WH-1000XM5 Wireless</text>
+  <text x="400" y="454" fill="#a1a1aa" font-family="monospace" font-size="14" text-anchor="middle">Ganti dengan foto produk asli di assets/images/</text>
+</svg>

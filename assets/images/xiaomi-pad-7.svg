@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="800" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fff7ed"/>
+      <stop offset="100%" stop-color="#ffedd5"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="180" y1="90" x2="620" y2="390" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f97316"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <rect x="170" y="88" width="460" height="310" rx="22" fill="#1e293b"/>
+  <rect x="188" y="106" width="424" height="274" rx="12" fill="url(#screen)"/>
+  <text x="400" y="234" fill="#ffffff" font-family="sans-serif" font-size="28" font-weight="700" text-anchor="middle">Xiaomi Pad 7 256GB</text>
+  <text x="400" y="266" fill="#ffedd5" font-family="monospace" font-size="14" text-anchor="middle">Ganti dengan foto produk asli di assets/images/</text>
+</svg>

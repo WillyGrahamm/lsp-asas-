@@ -14,7 +14,7 @@ const productsData = [
   {
     ticker: "ip-15-p128T",
     hotStatus: true,
-    nama: "Iphone 15 Pro 128GB Titanium",
+    nama: "iPhone 15 Pro 128GB Titanium",
     harga: 18999000,
     diskon: 5,
     kategori: "Featured Phone",
@@ -22,13 +22,13 @@ const productsData = [
     badgeTipe: "sale",
     gambar: "assets/images/ip.jpeg",
     deskripsi:
-      "Kamera utama 48MP Pro dengan sensor canggih, chip A17 Pro super cepat untuk gaming berat, bodi berbahan titanium kelas dirgantara, serta port USB-C universal berkecepatan tinggi.",
+      "Smartphone flagship Apple dengan kamera utama 48MP Pro, chip A17 Pro super cepat untuk gaming berat, bodi titanium kelas dirgantara, serta port USB-C 3.0 berkecepatan tinggi.",
     tags: [
+      "Apple",
       "A17 Pro",
       "Titanium",
       "5G Ready",
       "Dynamic Island",
-      "ProRes Video",
       "USB-C 3.0",
     ],
   },
@@ -45,54 +45,159 @@ const productsData = [
     deskripsi:
       "Fitur cerdas Galaxy AI, layar Dynamic AMOLED 2X super cerah, dan performa baterai awet sepanjang hari untuk menunjang aktivitas harian.",
     tags: [
+      "Samsung",
       "Galaxy AI",
       "Exynos 2400",
       "AMOLED 2X",
       "50 MP Camera",
       "IP68 Waterproof",
-      "Super Fast Charge",
     ],
   },
   {
-    ticker: "Pb-A10k-Pd",
+    ticker: "apple-macbook-air-m3",
     hotStatus: true,
-    nama: "Powerbank Anker 10k PD",
-    harga: 349000,
-    diskon: 15,
-    kategori: "Power Accessories",
-    badgeText: "PILIHAN",
+    nama: 'Apple MacBook Air 13" M3 256GB',
+    harga: 16499000,
+    diskon: 5,
+    kategori: "Laptop",
+    badgeText: "PROMO iBOX",
     badgeTipe: "sale",
-    gambar: "assets/images/pb.jpeg",
+    gambar: "assets/images/macbook-air-m3.svg",
     deskripsi:
-      "Powerbank mungil berkecepatan 30W Power Delivery dengan kabel Type-C built-in yang praktis untuk pengisian daya di mana saja.",
+      "Ultrabook super tipis tanpa kipas dengan chip Apple M3 8-core, layar Liquid Retina 13.6 inci tajam, MagSafe 3, dan daya tahan baterai hingga 18 jam.",
     tags: [
-      "A10000mAh",
-      "30W PD",
-      "Built-In Cable",
-      "PowerIQ 3.0",
-      "Trickle Charge",
-      "Ultra Compact",
+      "Apple",
+      "Chip M3",
+      "Liquid Retina",
+      "18h Battery",
+      "MagSafe 3",
+      "Wi-Fi 6E",
     ],
   },
   {
-    ticker: "Tws-SR50i",
-    hotStatus: false,
-    nama: "TWS Soundcore R50i",
-    harga: 199000,
-    diskon: 20,
-    kategori: "Audio Gadget",
-    badgeText: "STOK TERBATAS",
+    ticker: "xiaomi-pad-7",
+    hotStatus: true,
+    nama: "Xiaomi Pad 7 256GB",
+    harga: 5499000,
+    diskon: 8,
+    kategori: "Tablet",
+    badgeText: "BARU HADIR",
     badgeTipe: "sale",
-    gambar: "assets/images/tws.jpeg",
+    gambar: "assets/images/xiaomi-pad-7.svg",
     deskripsi:
-      "TWS bluetooth dengan bass mantap, tahan cipratan air PIX5, dan total daya betarai awet hingga 30 jam bersama charging case.",
+      "Tablet produktivitas dengan layar 11.2 inci 3.2K 144Hz jernih, chipset Snapdragon 7+ Gen 3 bertenaga, quad speaker Dolby Atmos, dan pengisian cepat 45W Turbo.",
     tags: [
-      "Bluetooth 5.3",
-      "IPX5 Water",
-      "30h Playtime",
-      "10mm Drivers",
-      "BassUp Tech",
-      "Soundcore App",
+      "Xiaomi",
+      "Snapdragon 7+ Gen 3",
+      "3.2K 144Hz",
+      "8850mAh",
+      "45W Turbo",
+      "HyperOS",
+    ],
+  },
+  {
+    ticker: "smsg-tab-s9-fe",
+    hotStatus: false,
+    nama: "Samsung Galaxy Tab S9 FE 128GB",
+    harga: 6999000,
+    diskon: 10,
+    kategori: "Tablet",
+    badgeText: "GARANSI TAM",
+    badgeTipe: "sale",
+    gambar: "assets/images/galaxy-tab-s9-fe.svg",
+    deskripsi:
+      "Tablet tahan air dan debu bersertifikasi IP68 yang sudah termasuk S Pen presisi dalam paket penjualan, ideal untuk catatan kuliah maupun ilustrasi kreatif.",
+    tags: [
+      "Samsung",
+      "Include S Pen",
+      "IP68 Tablet",
+      "90Hz Display",
+      "8000mAh",
+      "DeX Mode",
+    ],
+  },
+  {
+    ticker: "oneplus-pad-2",
+    hotStatus: false,
+    nama: "OnePlus Pad 2 256GB",
+    harga: 8499000,
+    diskon: 7,
+    kategori: "Tablet",
+    badgeText: "FLAGSHIP TABLET",
+    badgeTipe: "sale",
+    gambar: "assets/images/oneplus-pad-2.svg",
+    deskripsi:
+      "Tablet flagship bertenaga Snapdragon 8 Gen 3 dengan rasio layar 7:5 ReadFit 12.1 inci 3K 144Hz, 6 speaker imersif, dan baterai 9510mAh 67W SuperVOOC.",
+    tags: [
+      "Oneplus",
+      "Snapdragon 8 Gen 3",
+      "12.1\" 3K 144Hz",
+      "9510mAh",
+      "67W SuperVOOC",
+      "Open Canvas",
+    ],
+  },
+  {
+    ticker: "google-pixel-watch-3",
+    hotStatus: true,
+    nama: "Google Pixel Watch 3 45mm",
+    harga: 6299000,
+    diskon: 6,
+    kategori: "Smartwatch",
+    badgeText: "STOK EKSKLUSIF",
+    badgeTipe: "sale",
+    gambar: "assets/images/pixel-watch-3.svg",
+    deskripsi:
+      "Smartwatch Wear OS 5 dengan layar Actua 2000 nits yang terang di bawah matahari, analitik lari & kebugaran Fitbit tingkat lanjut, serta deteksi denyut darurat.",
+    tags: [
+      "Google",
+      "Wear OS 5",
+      "Actua 2000 nits",
+      "Fitbit Health",
+      "Snapdragon W5",
+      "5ATM",
+    ],
+  },
+  {
+    ticker: "oppo-watch-x",
+    hotStatus: false,
+    nama: "OPPO Watch X Dual-Engine",
+    harga: 5999000,
+    diskon: 12,
+    kategori: "Smartwatch",
+    badgeText: "GARANSI RESMI",
+    badgeTipe: "sale",
+    gambar: "assets/images/oppo-watch-x.svg",
+    deskripsi:
+      "Smartwatch tangguh berlapis kaca Sapphire Crystal dan bodi stainless steel, arsitektur dual-engine hemat daya hingga 100 jam, serta GPS dual-frequency presisi.",
+    tags: [
+      "Oppo",
+      "Sapphire Glass",
+      "100h Battery",
+      "Dual-Freq GPS",
+      "MIL-STD-810H",
+      "Wear OS",
+    ],
+  },
+  {
+    ticker: "sony-wh1000xm5",
+    hotStatus: true,
+    nama: "Sony WH-1000XM5 Wireless ANC",
+    harga: 5199000,
+    diskon: 15,
+    kategori: "Audio Flagship",
+    badgeText: "BEST SELLER AUDIO",
+    badgeTipe: "sale",
+    gambar: "assets/images/sony-wh1000xm5.svg",
+    deskripsi:
+      "Headphone over-ear peredam bising terbaik di kelasnya dengan 8 mikrofon, prosesor ganda V1 + QN1, audio Hi-Res LDAC, serta baterai awet 30 jam.",
+    tags: [
+      "Sony",
+      "Active Noise Cancelling",
+      "30h Battery",
+      "Hi-Res LDAC",
+      "Multipoint",
+      "8 Mic Call",
     ],
   },
 ];
@@ -219,6 +324,22 @@ const searchResults = document.getElementById("search-results");
 const categoryFilters = document.getElementById("category-filters");
 let activeCategory = "all";
 
+let keranjang = [];
+const cartButton = document.getElementById("cart-id");
+const cartDrawer = document.getElementById("cart-drawer");
+const cartBackdrop = document.getElementById("cart-backdrop");
+const cartCloseButton = document.getElementById("cart-close");
+const cartItems = document.getElementById("cart-items");
+const cartItemCount = document.getElementById("cart-item-count");
+const cartSubtotal = document.getElementById("cart-subtotal");
+const themeToggle = document.getElementById("theme-toggle");
+const themeToggleIcon = themeToggle.querySelector(".theme-toggle-icon");
+const themeToggleLabel = document.getElementById("theme-toggle-label");
+const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+const toastRegion = document.getElementById("toast-region");
+let themeTransitionTimeout;
+let toastTimeout;
+
 function renderCategoryFilters() {
   const categories = [...new Set(productsData.map((product) => product.kategori))];
   const options = [{ value: "all", label: "Semua produk" }].concat(
@@ -237,6 +358,63 @@ function renderCategoryFilters() {
   });
 
   categoryFilters.replaceChildren(fragment);
+}
+
+function syncBrandSelectionUI() {
+  const query = cari.value.trim().toLocaleLowerCase("id-ID");
+  totalElemen.querySelectorAll(".brand-item").forEach((brandCard) => {
+    const label =
+      brandCard.querySelector("span")?.textContent.trim().toLocaleLowerCase("id-ID") ||
+      "";
+    const isSelected = Boolean(label) && query === label;
+    brandCard.classList.toggle("is-active", isSelected);
+    brandCard.setAttribute("aria-pressed", String(isSelected));
+  });
+}
+
+function updateDocumentTitle() {
+  const defaultTitle = "GadgetVerse — Katalog Gadget & Aksesori Resmi";
+  if (cartDrawer && !cartDrawer.hidden) {
+    const totalItem = keranjang.reduce((total, item) => total + item.quantity, 0);
+    document.title = `Keranjang (${totalItem}) | GadgetVerse`;
+    return;
+  }
+  const query = cari.value.trim();
+  if (activeCategory !== "all" && query) {
+    document.title = `${activeCategory} · "${query}" | GadgetVerse`;
+  } else if (activeCategory !== "all") {
+    document.title = `${activeCategory} · Katalog | GadgetVerse`;
+  } else if (query) {
+    document.title = `Cari "${query}" | GadgetVerse`;
+  } else {
+    document.title = defaultTitle;
+  }
+}
+
+function animateProductCards() {
+  const cards = elemenProduk.querySelectorAll(".card");
+  cards.forEach((card, index) => {
+    card.style.setProperty("--card-index", String(index));
+  });
+
+  if (
+    window.gsap &&
+    window.matchMedia("(prefers-reduced-motion: no-preference)").matches &&
+    cards.length > 0
+  ) {
+    window.gsap.fromTo(
+      cards,
+      { y: 20, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.45,
+        stagger: 0.055,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+      },
+    );
+  }
 }
 
 function renderFilteredProducts() {
@@ -267,7 +445,7 @@ function renderFilteredProducts() {
     input.length > 0 || activeCategory !== "all",
   );
   elemenProduk.textContent = "";
-  searchResults.textContent = `${hasilFilter.length} produk ditampilkan${
+  searchResults.textContent = `Menampilkan ${hasilFilter.length} dari ${productsData.length} produk${
     activeCategory !== "all" ? ` · ${activeCategory}` : ""
   }${input ? ` · pencarian "${cari.value.trim()}"` : ""}`;
 
@@ -281,7 +459,11 @@ function renderFilteredProducts() {
     elemenProduk.appendChild(notFound);
   } else {
     getProducts(hasilFilter, elemenProduk);
+    animateProductCards();
   }
+
+  syncBrandSelectionUI();
+  updateDocumentTitle();
 }
 
 function handleSearch() {
@@ -304,23 +486,76 @@ function handleCategoryFilter(event) {
   renderFilteredProducts();
 }
 
+function handleBrandFilter(event) {
+  const brandCard = event.target.closest(".brand-item");
+  if (!brandCard) return;
+
+  const brandName = brandCard.querySelector("span")?.textContent.trim();
+  if (!brandName) return;
+
+  const currentQuery = cari.value.trim().toLocaleLowerCase("id-ID");
+  const isSameBrand = currentQuery === brandName.toLocaleLowerCase("id-ID");
+
+  cari.value = isSameBrand ? "" : brandName;
+  activeCategory = "all";
+  categoryFilters
+    .querySelectorAll(".category-filter")
+    .forEach((filterButton) => {
+      filterButton.setAttribute(
+        "aria-pressed",
+        String(filterButton.dataset.category === "all"),
+      );
+    });
+
+  renderFilteredProducts();
+
+  if (!isSameBrand) {
+    const catalogTarget = document.getElementById("katalog");
+    if (catalogTarget) {
+      catalogTarget.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+      });
+    }
+  }
+}
+
 renderCategoryFilters();
 renderFilteredProducts();
 cari.addEventListener("input", handleSearch);
 categoryFilters.addEventListener("click", handleCategoryFilter);
+totalElemen.addEventListener("click", handleBrandFilter);
 
-let keranjang = [];
-const cartButton = document.getElementById("cart-id");
-const cartDrawer = document.getElementById("cart-drawer");
-const cartBackdrop = document.getElementById("cart-backdrop");
-const cartCloseButton = document.getElementById("cart-close");
-const cartItems = document.getElementById("cart-items");
-const cartItemCount = document.getElementById("cart-item-count");
-const cartSubtotal = document.getElementById("cart-subtotal");
-const themeToggle = document.getElementById("theme-toggle");
-const themeToggleIcon = themeToggle.querySelector(".theme-toggle-icon");
-const themeToggleLabel = document.getElementById("theme-toggle-label");
-let themeTransitionTimeout;
+function createSvgIcon(pathDataList, viewBox = "0 0 24 24") {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", viewBox);
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+
+  pathDataList.forEach((d) => {
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", d);
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "currentColor");
+    path.setAttribute("stroke-width", "1.9");
+    path.setAttribute("stroke-linecap", "round");
+    path.setAttribute("stroke-linejoin", "round");
+    svg.appendChild(path);
+  });
+
+  return svg;
+}
+
+function syncThemeColor(drawerOpen = !cartDrawer.hidden) {
+  if (!themeColorMeta) return;
+  const isDark = document.documentElement.dataset.theme === "dark";
+  if (drawerOpen) {
+    themeColorMeta.setAttribute("content", isDark ? "#111a2b" : "#ffffff");
+  } else {
+    themeColorMeta.setAttribute("content", isDark ? "#080d18" : "#f8fafc");
+  }
+}
 
 function setTheme(theme, animate = false) {
   const isDark = theme === "dark";
@@ -349,23 +584,61 @@ function setTheme(theme, animate = false) {
     "aria-label",
     isDark ? "Aktifkan mode terang" : "Aktifkan mode gelap",
   );
-  themeToggleIcon.textContent = isDark ? "☀" : "☾";
+  const sunPaths = [
+    "M12 3v2m0 14v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M3 12h2m14 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41",
+    "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z",
+  ];
+  const moonPaths = ["M20.35 15.35A9 9 0 1 1 8.65 3.65a7 7 0 0 0 11.7 11.7Z"];
+  themeToggleIcon.replaceChildren(
+    createSvgIcon(isDark ? sunPaths : moonPaths),
+  );
   themeToggleLabel.textContent = isDark ? "Mode terang" : "Mode gelap";
   localStorage.setItem("gadgetverse-theme", isDark ? "dark" : "light");
+  syncThemeColor();
 }
 
-const savedTheme = localStorage.getItem("gadgetverse-theme");
-setTheme(savedTheme === "dark" ? "dark" : "light");
-themeToggle.addEventListener("click", (event) => {
+function handleThemeToggle(event) {
   event.preventDefault();
   setTheme(
     document.documentElement.dataset.theme === "dark" ? "light" : "dark",
     true,
   );
-});
+}
+
+const savedTheme = localStorage.getItem("gadgetverse-theme");
+setTheme(savedTheme === "dark" ? "dark" : "light");
+themeToggle.addEventListener("click", handleThemeToggle);
 
 function formatHarga(harga) {
   return `Rp ${harga.toLocaleString("id-ID")}`;
+}
+
+function showCartToast(message) {
+  if (!toastRegion) return;
+
+  const toast = document.createElement("div");
+  toast.className = "store-toast";
+
+  const iconWrap = document.createElement("span");
+  iconWrap.className = "store-toast-icon";
+  iconWrap.setAttribute("aria-hidden", "true");
+  iconWrap.appendChild(createSvgIcon(["M5 13l4 4L19 7"]));
+
+  const label = document.createElement("span");
+  label.textContent = message;
+
+  toast.append(iconWrap, label);
+  toastRegion.replaceChildren(toast);
+
+  window.clearTimeout(toastTimeout);
+  toastTimeout = window.setTimeout(() => {
+    toast.classList.add("is-leaving");
+    window.setTimeout(() => {
+      if (toast.parentNode === toastRegion) {
+        toast.remove();
+      }
+    }, 240);
+  }, 2400);
 }
 
 function updateCartSummary() {
@@ -377,6 +650,7 @@ function updateCartSummary() {
   cartButton.textContent = `Keranjang (${totalItem})`;
   cartItemCount.textContent = `${totalItem} produk dipilih`;
   cartSubtotal.textContent = formatHarga(subtotal);
+  updateDocumentTitle();
 }
 
 function renderKeranjang() {
@@ -469,7 +743,12 @@ function renderKeranjang() {
     const icon = document.createElement("span");
     icon.className = "cart-empty-icon";
     icon.setAttribute("aria-hidden", "true");
-    icon.textContent = "🛍";
+    icon.appendChild(
+      createSvgIcon([
+        "M6 7h12l1 13H5L6 7Z",
+        "M9 7V5a3 3 0 0 1 6 0v2",
+      ]),
+    );
 
     const title = document.createElement("h3");
     title.textContent = "Keranjangmu masih kosong";
@@ -495,6 +774,8 @@ function openCart() {
   document.body.classList.add("cart-open");
   cartButton.setAttribute("aria-expanded", "true");
   cartDrawer.setAttribute("aria-hidden", "false");
+  syncThemeColor(true);
+  updateDocumentTitle();
   window.requestAnimationFrame(() => {
     cartDrawer.classList.add("is-open");
     cartBackdrop.classList.add("is-visible");
@@ -510,19 +791,18 @@ function closeCart() {
   document.body.classList.remove("cart-open");
   cartButton.setAttribute("aria-expanded", "false");
   cartDrawer.setAttribute("aria-hidden", "true");
+  syncThemeColor(false);
   window.setTimeout(() => {
     if (!cartDrawer.classList.contains("is-open")) {
       cartDrawer.hidden = true;
       cartBackdrop.hidden = true;
+      updateDocumentTitle();
       cartButton.focus();
     }
   }, 300);
 }
 
-cartButton.addEventListener("click", openCart);
-cartCloseButton.addEventListener("click", closeCart);
-cartBackdrop.addEventListener("click", closeCart);
-document.addEventListener("keydown", (event) => {
+function handleDocumentKeydown(event) {
   if (event.key === "Escape") {
     closeCart();
     return;
@@ -543,7 +823,12 @@ document.addEventListener("keydown", (event) => {
     event.preventDefault();
     fokusPertama.focus();
   }
-});
+}
+
+cartButton.addEventListener("click", openCart);
+cartCloseButton.addEventListener("click", closeCart);
+cartBackdrop.addEventListener("click", closeCart);
+document.addEventListener("keydown", handleDocumentKeydown);
 
 function handleBeli(event) {
   const beliTerpilih = event.target.dataset.ticker;
@@ -564,6 +849,7 @@ function handleBeli(event) {
   }
 
   renderKeranjang();
+  showCartToast(`${produkTerpilih.nama} ditambahkan ke keranjang`);
   cartButton.classList.add("getpulse");
   cartButton.addEventListener(
     "animationend",
@@ -619,6 +905,14 @@ function animateCartItemRemoval(itemElement, ticker) {
     renderKeranjang();
   }
 
+  if (
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+    itemElement.getAnimations().length === 0
+  ) {
+    finishRemoval();
+    return;
+  }
+
   itemElement.addEventListener("animationend", finishRemoval, { once: true });
   window.setTimeout(finishRemoval, 300);
 }
@@ -629,7 +923,8 @@ function handleDeskripsi(event) {
   deskTerpilih.hidden = !deskTerpilih.hidden;
 
   const deskTerbuka = !deskTerpilih.hidden;
-  event.target.setAttribute("aria-label", String(deskTerbuka));
+  event.target.setAttribute("aria-expanded", String(deskTerbuka));
+  deskTerpilih.setAttribute("aria-expanded", String(deskTerbuka));
 }
 
 function handleAllCard(event) {
@@ -640,6 +935,100 @@ function handleAllCard(event) {
     handleDeskripsi(event);
   }
 }
+
+function handleHeroAction(event) {
+  const button = event.target.closest("button[data-scroll-target]");
+  if (!button) return;
+
+  const target = document.getElementById(button.dataset.scrollTarget);
+  if (!target) return;
+
+  target.scrollIntoView({
+    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth",
+  });
+}
+
+function handleFaqToggle(event) {
+  const trigger = event.target.closest(".faq-trigger");
+  if (!trigger) return;
+
+  const answerId = trigger.getAttribute("aria-controls");
+  const answer = answerId ? document.getElementById(answerId) : null;
+  if (!answer) return;
+
+  const willExpand = trigger.getAttribute("aria-expanded") !== "true";
+  trigger.setAttribute("aria-expanded", String(willExpand));
+  answer.hidden = !willExpand;
+}
+
+function initScrollAnimations() {
+  const prefersReduced = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const revealTargets = document.querySelectorAll("[data-reveal]");
+
+  if (prefersReduced || !("IntersectionObserver" in window)) {
+    revealTargets.forEach((el) => el.classList.add("is-revealed"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const target = entry.target;
+        target.classList.add("is-revealed");
+
+        if (window.gsap) {
+          window.gsap.fromTo(
+            target,
+            { y: 24, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.6,
+              ease: "power3.out",
+              clearProps: "transform,opacity",
+            },
+          );
+        }
+        observer.unobserve(target);
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -30px 0px" },
+  );
+
+  revealTargets.forEach((target) => observer.observe(target));
+
+  if (window.gsap) {
+    window.gsap.fromTo(
+      ".hero-content > *, .hero-gadget",
+      { y: 18, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.65,
+        stagger: 0.08,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+      },
+    );
+  }
+}
+
+const heroActions = document.querySelector(".button-upper");
+const faqContainer = document.getElementById("faq-list");
+
+if (heroActions) {
+  heroActions.addEventListener("click", handleHeroAction);
+}
+if (faqContainer) {
+  faqContainer.addEventListener("click", handleFaqToggle);
+}
+
 elemenProduk.addEventListener("click", handleAllCard);
 cartItems.addEventListener("click", handleCartQuantity);
 renderKeranjang();
+window.addEventListener("DOMContentLoaded", initScrollAnimations);

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f8fafc" />
+    <meta
+      name="description"
+      content="Halaman tidak ditemukan di GadgetVerse Indonesia."
+    />
+    <title>404 — Halaman Tidak Ditemukan | GadgetVerse</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="stylesheet" href="assets/style.css" />
+    <script>
+      if (localStorage.getItem("gadgetverse-theme") === "dark") {
+        document.documentElement.dataset.theme = "dark";
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute("content", "#080d18");
+      }
+    </script>
+  </head>
+  <body class="not-found-page">
+    <main class="not-found-shell">
+      <div class="not-found-illustration" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path
+            d="M9.5 3h5a2.5 2.5 0 0 1 2.5 2.5v13a2.5 2.5 0 0 1-2.5 2.5h-5A2.5 2.5 0 0 1 7 18.5v-13A2.5 2.5 0 0 1 9.5 3ZM3 3l18 18"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+      <span class="not-found-code">ERROR 404</span>
+      <h1>Halaman atau Produk Tidak Ditemukan</h1>
+      <p>
+        Tautan yang kamu tuju mungkin sudah dipindahkan, dihapus, atau alamatnya
+        kurang tepat. Tenang, katalog gadget resmi GadgetVerse tetap siap
+        dijelajahi.
+      </p>
+      <div class="not-found-actions">
+        <a href="index.html" class="not-found-btn primary">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M3 11.5 12 4l9 7.5M5 10v10h5v-6h4v6h5V10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.9"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>Kembali ke Beranda</span>
+        </a>
+        <a href="index.html#katalog" class="not-found-btn secondary">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M11 4a7 7 0 1 0 4.95 11.95L20 20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.9"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>Lihat Katalog Gadget</span>
+        </a>
+        <a href="index.html#brand" class="not-found-btn secondary">
+          <span>Brand Partner</span>
+        </a>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="800" y2="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="210" y1="90" x2="590" y2="330" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="55%" stop-color="#4f46e5"/>
+      <stop offset="100%" stop-color="#f9831b"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <circle cx="660" cy="95" r="140" fill="#2563eb" fill-opacity="0.14"/>
+  <circle cx="150" cy="410" r="160" fill="#f9831b" fill-opacity="0.12"/>
+  <rect x="200" y="84" width="400" height="252" rx="16" fill="#0b1120" stroke="#475569" stroke-width="4"/>
+  <rect x="216" y="100" width="368" height="220" rx="8" fill="url(#screen)"/>
+  <path d="M140 344h520l26 24c4 4 1 10-5 10H119c-6 0-9-6-5-10l26-24Z" fill="#cbd5e1"/>
+  <rect x="355" y="346" width="90" height="8" rx="4" fill="#94a3b8"/>
+  <text x="400" y="218" fill="#ffffff" font-family="sans-serif" font-size="26" font-weight="700" text-anchor="middle">MacBook Air M3 13"</text>
+  <text x="400" y="248" fill="#e2e8f0" font-family="monospace" font-size="14" text-anchor="middle">Ganti dengan foto produk asli di assets/images/</text>
+</svg>

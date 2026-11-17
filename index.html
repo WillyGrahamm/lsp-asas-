@@ -3,37 +3,149 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Gadgetverse" />
-    <title>Gadgetverse</title>
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f8fafc" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta
+      name="description"
+      content="GadgetVerse Indonesia — Katalog interaktif smartphone, tablet, smartwatch, laptop, dan audio flagship bergaransi resmi TAM & iBox."
+    />
+    <title>GadgetVerse — Katalog Gadget &amp; Aksesori Resmi</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link
+      rel="alternate"
+      type="text/plain"
+      href="llms.txt"
+      title="LLM Knowledge Base"
+    />
+    <script>
+      if (localStorage.getItem("gadgetverse-theme") === "dark") {
+        document.documentElement.dataset.theme = "dark";
+      }
+    </script>
     <link rel="stylesheet" href="assets/style.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"
+      defer
+    ></script>
     <script src="assets/script.js" defer></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "OnlineStore",
+            "name": "GadgetVerse Indonesia",
+            "description": "Toko ritel gadget resmi di Indonesia untuk smartphone, tablet, smartwatch, laptop, dan audio flagship bergaransi resmi TAM & iBox.",
+            "areaServed": "ID",
+            "brand": [
+              { "@type": "Brand", "name": "Apple" },
+              { "@type": "Brand", "name": "Samsung" },
+              { "@type": "Brand", "name": "Xiaomi" },
+              { "@type": "Brand", "name": "Google" },
+              { "@type": "Brand", "name": "OPPO" },
+              { "@type": "Brand", "name": "Sony" },
+              { "@type": "Brand", "name": "OnePlus" }
+            ]
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Apakah semua produk di GadgetVerse bergaransi resmi?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Ya, seluruh unit smartphone, tablet, laptop, smartwatch, dan audio di GadgetVerse 100% original dan dilengkapi garansi resmi distributor Indonesia seperti TAM, iBox, dan garansi resmi brand terkait."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Berapa lama estimasi pengiriman instan dan apakah gratis ongkir?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "GadgetVerse menyediakan layanan gratis ongkir ke seluruh Indonesia serta opsi pengiriman instan 3 jam tiba untuk area cakupan kota besar."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Apakah tersedia opsi cicilan 0% untuk produk flagship?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Tersedia program cicilan 0% dengan tenor hingga 24 bulan untuk pembelian seluruh kategori gadget resmi di GadgetVerse."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body id="body">
+    <a href="#katalog" class="skip-link visually-hidden">
+      Lewati ke katalog produk
+    </a>
+
     <div class="back-btn">
-      <a href="#body">↑</a>
+      <a href="#body" aria-label="Kembali ke atas halaman">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M12 19V5m0 0-6 6m6-6 6 6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </a>
     </div>
 
-    <section class="socialv2">
-      <nav class="nav-footv2">
+    <section class="socialv2" aria-label="Tautan media sosial">
+      <nav class="nav-footv2" aria-label="Media sosial">
         <ul>
           <li>
-            <a href="instagram.com" id="ig" target="_blank"
-              ><img src="assets/images/social-ig.png" alt="instagram"
+            <a
+              href="https://instagram.com"
+              id="ig"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram GadgetVerse"
+              ><img src="assets/images/social-ig.png" alt=""
             /></a>
           </li>
           <li>
-            <a href="x.com" id="x" target="_blank"
-              ><img src="assets/images/social-x.png" alt="x"
+            <a
+              href="https://x.com"
+              id="x"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X GadgetVerse"
+              ><img src="assets/images/social-x.png" alt=""
             /></a>
           </li>
           <li>
-            <a href="tiktok.com" id="tt" target="_blank"
-              ><img src="assets/images/social-tk.png" alt="tiktok"
+            <a
+              href="https://tiktok.com"
+              id="tt"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="TikTok GadgetVerse"
+              ><img src="assets/images/social-tk.png" alt=""
             /></a>
           </li>
           <li>
-            <a href="facebook.com" id="fb" target="_blank"
-              ><img src="assets/images/social-fc.png" alt="facebook"
+            <a
+              href="https://facebook.com"
+              id="fb"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook GadgetVerse"
+              ><img src="assets/images/social-fc.png" alt=""
             /></a>
           </li>
         </ul>
@@ -42,39 +154,53 @@
 
     <header>
       <div class="upper">
-        <div class="side-logo">
+        <a href="#body" class="side-logo">
           <span>Gadgetverse</span>
-          <p>Gadget & Accessories</p>
-        </div>
-        <nav class="nav-head">
+          <p>Official Tech Store</p>
+        </a>
+        <nav class="nav-head" aria-label="Utama">
           <ul>
             <li><a href="#brand">Brand Pilihan</a></li>
-            <li><a href="#main">Katalog HP</a></li>
+            <li><a href="#katalog">Katalog Gadget</a></li>
             <li><a href="#recc">Rekomendasi</a></li>
-            <li><a href="#road">Roadmap</a></li>
+            <li><a href="#road">Layanan &amp; FAQ</a></li>
             <li><a href="#footer">Hubungi Kami</a></li>
           </ul>
         </nav>
-        <button
-          class="theme-toggle"
-          id="theme-toggle"
-          type="button"
-          aria-label="Aktifkan mode gelap"
-          aria-pressed="false"
-        >
-          <span class="theme-toggle-icon" aria-hidden="true">☾</span>
-          <span id="theme-toggle-label">Mode gelap</span>
-        </button>
-        <button
-          id="cart-id"
-          type="button"
-          aria-haspopup="dialog"
-          aria-controls="cart-drawer"
-          aria-expanded="false"
-        >
-          Keranjang (0)
-        </button>
+        <div class="header-actions">
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            type="button"
+            aria-label="Aktifkan mode gelap"
+            aria-pressed="false"
+          >
+            <span class="theme-toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M20.35 15.35A9 9 0 1 1 8.65 3.65a7 7 0 0 0 11.7 11.7Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <span id="theme-toggle-label">Mode gelap</span>
+          </button>
+          <button
+            id="cart-id"
+            type="button"
+            aria-haspopup="dialog"
+            aria-controls="cart-drawer"
+            aria-expanded="false"
+          >
+            Keranjang (0)
+          </button>
+        </div>
       </div>
+      <div class="scroll-progress" aria-hidden="true"></div>
     </header>
 
     <button
@@ -105,13 +231,32 @@
           type="button"
           aria-label="Tutup keranjang"
         >
-          &times;
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path
+              d="M6 6l12 12M18 6 6 18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
         </button>
       </div>
       <div class="cart-items" id="cart-items" aria-live="polite"></div>
       <div class="cart-summary">
         <div class="cart-shipping">
-          <span class="shipping-icon" aria-hidden="true">✓</span>
+          <span class="shipping-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                d="M5 13l4 4L19 7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
           <span>Gratis ongkir untuk pesananmu</span>
         </div>
         <div class="cart-subtotal">
@@ -128,23 +273,33 @@
     <section class="hero">
       <div class="sidebyside">
         <div class="hero-content">
-          <span id="august26">• PROMO GADGET TERBARU AGUSTUS 2026</span>
-          <h1>Dapatkan Gadget Impian & aksesori Original Bergaransi Resmi</h1>
+          <span id="august26">
+            <span class="pulse-dot" aria-hidden="true"></span>
+            PROMO GADGET TERBARU 2026
+          </span>
+          <h1>
+            Ekosistem Gadget Flagship Original &amp; Bergaransi Resmi Indonesia
+          </h1>
           <p>
-            Toko ritel handphone dan aksesori terlengkap di Indonesia. Belanja
-            aman dengan jaminan keaslian 100%, garansi resmi TAM/iBox, dan
-            layanan tukar tambah instan.
+            Dari smartphone hingga tablet produktivitas, laptop M-series,
+            smartwatch, dan audio flagship. Belanja tenang dengan jaminan
+            keaslian 100%, garansi resmi TAM/iBox, serta layanan tukar tambah
+            instan.
           </p>
           <div class="button-upper">
-            <button value="hlight">Lihat Produk Handphone</button>
-            <button value="nhlight">Rekomendasi Aksesori</button>
+            <button type="button" value="hlight" data-scroll-target="katalog">
+              Jelajahi Katalog Gadget
+            </button>
+            <button type="button" value="nhlight" data-scroll-target="recc">
+              Kurasi Unggulan
+            </button>
           </div>
         </div>
 
         <div class="hero-gadget">
           <img
             src="assets/images/tablet.png"
-            alt="Illustrasi Gadget Impian & Aksesori"
+            alt="Ilustrasi perangkat tablet dan ekosistem gadget GadgetVerse"
           />
         </div>
       </div>
@@ -152,7 +307,7 @@
       <div class="tag-itemv3">
         <div class="stat-item">
           <span value="stat1">100%</span>
-          <span value="stat2">ORIGINAL TAM & IBOX</span>
+          <span value="stat2">ORIGINAL TAM &amp; IBOX</span>
         </div>
         <div class="stat-item">
           <span value="stat1">Gratis</span>
@@ -169,68 +324,42 @@
       </div>
     </section>
 
-    <section class="brand">
+    <section class="brand" id="brand" data-reveal>
       <div class="brand-title">
         <span>OFFICIAL BRAND PARTNERS</span>
         <h1>Belanja Berdasarkan Brand</h1>
         <p>
-          Cari gadget dan aksesori original langsung dari brand partner resmi
-          kami.
+          Klik salah satu brand partner resmi kami untuk langsung menyaring
+          koleksi gadget originalnya.
         </p>
       </div>
-      <div class="brand-tag">
-        <div class="brand-item">
-          <img src="assets/images/brand-apple.png" alt="apple" />
-          <span>Apple</span>
-        </div>
-        <!-- <div class="brand-item">
-          <img src="assets/images/brand-smsg.png" alt="samsung" />
-          <span>Samsung</span>
-        </div>
-        <div class="brand-item">
-          <img src="assets/images/brand-xiaomi.png" alt="xiaomi" />
-          <span>Xiaomi</span>
-        </div>
-        <div class="brand-item">
-          <img src="assets/images/brand-gglg.png" alt="pixel" />
-          <span>Google Pixel</span>
-        </div>
-        <div class="brand-item">
-          <img src="assets/images/brand-oppo.png" alt="oppo" />
-          <span>Oppo TAM</span>
-        </div>
-        <div class="brand-item">
-          <img src="assets/images/brand-sony.png" alt="sony" />
-          <span>Sony Audio</span>
-        </div>
-        <div class="brand-item">
-          <img src="assets/images/brand-oneplus.png" alt="oneplus" />
-          <span>OnePlus</span>
-        </div> -->
-      </div>
+      <div class="brand-tag"></div>
     </section>
 
-    <main>
-      <div class="title" id="title">
+    <main id="katalog" tabindex="-1">
+      <div class="title" id="title" data-reveal>
         <div class="katalog">
-          <span value="mega">MEGA SALE 11.1</span>
+          <span value="mega">MEGA SALE 11.11</span>
           <span value="bebas">Bebas Ongkir</span>
         </div>
-        <span id="aksesori">Katalog Smartphone & Aksesori</span>
-        <h1>Pilihan Handphone Terpopuler</h1>
+        <span id="aksesori">Katalog Gadget Multi-Kategori</span>
+        <h1>Pilihan Gadget Flagship Terpopuler</h1>
         <p>
-          Daftar handphone berspesifikasi tinggi, kamera canggih, dan baterai
-          tahan lama dari brand global.
+          Koleksi terkurasi mulai dari smartphone, tablet produktivitas, laptop
+          ultrabook, smartwatch kesehatan, hingga headphone audio premium.
         </p>
       </div>
 
-      <div class="live">
-        <h2>Temukan Handphone & Aksesori Impianmu</h2>
+      <div class="live" data-reveal>
+        <h2>Temukan Gadget Impianmu</h2>
         <div class="live-input">
+          <label for="product-search" class="visually-hidden">
+            Cari produk berdasarkan nama, brand, kategori, atau spesifikasi
+          </label>
           <input
+            id="product-search"
             type="text"
-            placeholder="Cari nama, kategori, atau spesifikasi produk"
-            aria-label="Cari produk berdasarkan nama, kategori, atau spesifikasi"
+            placeholder="Cari nama, brand, kategori, atau spesifikasi (mis. Tablet, Apple, ANC)..."
             aria-describedby="search-results"
           />
         </div>
@@ -243,146 +372,237 @@
         <p class="search-results" id="search-results" aria-live="polite"></p>
       </div>
 
-      <div class="content" id="main">
-        <div class="card ip-15-p128T">
-          <div class="upspan">
-            <span value="hot-org">PROMO UTAMA iBOX</span>
-            <span value="side-right">Featured Phone</span>
-          </div>
-          <div class="img">
-            <span value="disc">-5%</span>
-            <img
-              src="assets/images/ip.jpeg"
-              alt="Iphone 15 Pro 128GB Titanium"
-            />
-          </div>
-          <span value="rp">Rp. 18.999.000</span>
-          <h2>iPhone 15 Pro 128GB Titanium</h2>
-          <p>
-            Kamera utama 48MP Pro dengan sensor canggih, chip A17 Pro super
-            cepat untuk gaming berat, bodi berbahan titanium kelas dirgantara,
-            serta port USB-C universal berkecepatan tinggi.
-          </p>
-          <div class="tag-item">
-            <span>A17 Pro</span>
-            <span>Titanium</span>
-            <span>5G Ready</span>
-            <span>Dynamic Island</span>
-            <span>ProRes Video</span>
-            <span>USB-C 3.0</span>
-          </div>
-          <div class="button">
-            <button value="hlight">Beli Sekarang</button>
-            <button value="nhlight">Spesifikasi</button>
-          </div>
-        </div>
-
-        <!-- <div class="card smsg-gs24-256GB">
-          <div class="upspan">
-            <span value="cold-org">GARANSI TAM</span>
-            <span value="side-right">Android Phone</span>
-          </div>
-          <div class="img">
-            <span value="disc">-10%</span>
-            <img src="assets/images/smsg.jpeg" alt="Samsung Galaxy S24 256GB" />
-          </div>
-          <span value="rp">Rp. 13.499.000</span>
-          <h2>Samsung Galaxy S24 256GB</h2>
-          <p>
-            Fitur cerdas Galaxy AI, layar Dynamic AMOLED 2X super cerah, dan
-            performa baterai awet sepanjang hari untuk menunjang aktivitas
-            harian.
-          </p>
-          <div class="tag-item">
-            <span>Galaxy AI</span>
-            <span>Exynos 2400</span>
-            <span>AMOLED 2X</span>
-            <span>50 MP Camera</span>
-            <span>IP68 Waterproof</span>
-            <span>Super Fast Charge</span>
-          </div>
-          <div class="button">
-            <button value="hlight">Beli Sekarang</button>
-            <button value="nhlight">Spesifikasi</button>
-          </div>
-        </div>
-
-        <div class="card Pb-A10k-Pd">
-          <div class="upspan">
-            <span value="hot-org">PILIHAN</span>
-            <span value="side-right">Power Accessories</span>
-          </div>
-          <div class="img">
-            <span value="disc">-15%</span>
-            <img src="assets/images/pb.jpeg" alt="Powerbank Anker 10k PD" />
-          </div>
-          <span value="rp">Rp. 349.000</span>
-          <h2>Powerbank Anker 10k PD</h2>
-          <p>
-            Powerbank mungil berkecepatan 30W Power Delivery dengan kabel Type-C
-            built-in yang praktis untuk pengisian daya di mana saja.
-          </p>
-          <div class="tag-item">
-            <span>10000mAh</span>
-            <span>30W PD</span>
-            <span>Built-In Cable</span>
-            <span>PowerIQ 3.0</span>
-            <span>Trickle Charge</span>
-            <span>Ultra Compact</span>
-          </div>
-          <div class="button">
-            <button value="hlight">Beli Sekarang</button>
-            <button value="nhlight">Spesifikasi</button>
-          </div>
-        </div>
-
-        <div class="card Tws-SR50i">
-          <div class="upspan">
-            <span value="cold-org">STOK TERBATAS</span>
-            <span value="side-right">Audio Gadget</span>
-          </div>
-          <div class="img">
-            <span value="disc">-20%</span>
-            <img src="assets/images/tws.jpeg" alt="TWS Soundcore R50i" />
-          </div>
-          <span value="rp">Rp. 199.000</span>
-          <h2>TWS Soundcore R50i</h2>
-          <p>
-            TWS bluetooth dengan bass mantap, tahan cipratan air PIX5, dan total
-            daya betarai awet hingga 30 jam bersama charging case.
-          </p>
-          <div class="tag-item">
-            <span>Bluetooth 5.3</span>
-            <span>IPX5 Water</span>
-            <span>30h Playtime</span>
-            <span>10mm Drivers</span>
-            <span>BassUp Tech</span>
-            <span>Soundcore App</span>
-          </div>
-          <div class="button">
-            <button value="hlight">Beli Sekarang</button>
-            <button value="nhlight">Spesifikasi</button>
-          </div>
-        </div> -->
-      </div>
+      <div class="content" id="main"></div>
     </main>
 
+    <section class="highlights" id="recc" data-reveal>
+      <div class="section-heading">
+        <span class="section-eyebrow">CURATED LINEUP</span>
+        <h2>Rekomendasi Sesuai Kebutuhan</h2>
+        <p>
+          Kombinasi perangkat terbaik untuk produktivitas harian, gaya hidup
+          aktif, hingga pengalaman audio studio.
+        </p>
+      </div>
+      <div class="highlights-grid">
+        <article class="highlight-card">
+          <div class="highlight-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path
+                d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6Zm-2 13h20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <h3>Produktivitas Kerja &amp; Kuliah</h3>
+          <p>
+            Padukan Apple MacBook Air M3, Xiaomi Pad 7, Galaxy Tab S9 FE, atau
+            OnePlus Pad 2 untuk multitasking lancar sepanjang hari.
+          </p>
+        </article>
+        <article class="highlight-card">
+          <div class="highlight-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path
+                d="M9 3h6l1 3h-8l1-3Zm0 18h6l1-3H8l1 3ZM12 8v4l2.5 1.5M7 6h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <h3>Wearable &amp; Olahraga Presisi</h3>
+          <p>
+            Pantau kebugaran harian, detak jantung, dan rute lari secara akurat
+            dengan Google Pixel Watch 3 maupun OPPO Watch X.
+          </p>
+        </article>
+        <article class="highlight-card">
+          <div class="highlight-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path
+                d="M4 14v-2a8 8 0 0 1 16 0v2m-16 0a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h2v-6H4Zm16 0h-2v6h2a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2Z"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <h3>Fokus &amp; Audio Tanpa Bising</h3>
+          <p>
+            Nikmati peredam bising aktif kelas flagship dan kualitas Hi-Res LDAC
+            dari Sony WH-1000XM5 saat bekerja maupun bepergian.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="roadmap-faq" id="road" data-reveal>
+      <div class="section-heading">
+        <span class="section-eyebrow">ALUR LAYANAN &amp; FAQ</span>
+        <h2>Belanja Cepat, Aman, Bergaransi</h2>
+        <p>
+          Tahapan layanan resmi GadgetVerse plus jawaban atas pertanyaan yang
+          paling sering diajukan.
+        </p>
+      </div>
+
+      <div class="roadmap-steps">
+        <div class="roadmap-step">
+          <span class="step-badge">01</span>
+          <h3>Filter &amp; Cek Spesifikasi</h3>
+          <p>
+            Bandingkan spesifikasi ringkas tiap gadget langsung di katalog
+            interaktif tanpa berpindah halaman.
+          </p>
+        </div>
+        <div class="roadmap-step">
+          <span class="step-badge">02</span>
+          <h3>Verifikasi Garansi Resmi</h3>
+          <p>
+            Setiap unit disegel resmi distributor Indonesia (TAM, iBox, dan
+            official store brand) dengan IMEI &amp; serial terdaftar.
+          </p>
+        </div>
+        <div class="roadmap-step">
+          <span class="step-badge">03</span>
+          <h3>Pengiriman Instan Terasuransi</h3>
+          <p>
+            Dikirim dengan proteksi penuh gratis ongkir se-Indonesia atau kurir
+            instan 3 jam untuk kota besar.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-list" id="faq-list">
+        <div class="faq-item">
+          <button
+            type="button"
+            class="faq-trigger"
+            aria-expanded="false"
+            aria-controls="faq-ans-1"
+          >
+            <span>Apakah semua produk di GadgetVerse bergaransi resmi?</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                d="M6 9l6 6 6-6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <div id="faq-ans-1" class="faq-answer" hidden>
+            <p>
+              Ya, seluruh unit smartphone, tablet, laptop, smartwatch, dan
+              perangkat audio di GadgetVerse 100% original dan dilengkapi
+              garansi resmi distributor Indonesia (TAM, iBox, serta official
+              service center brand).
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button
+            type="button"
+            class="faq-trigger"
+            aria-expanded="false"
+            aria-controls="faq-ans-2"
+          >
+            <span>Berapa lama estimasi pengiriman instan dan ongkirnya?</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                d="M6 9l6 6 6-6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <div id="faq-ans-2" class="faq-answer" hidden>
+            <p>
+              Seluruh pesanan mendapatkan gratis ongkir ke seluruh Indonesia,
+              dengan opsi kurir instan 3 jam tiba di area cakupan kota besar.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button
+            type="button"
+            class="faq-trigger"
+            aria-expanded="false"
+            aria-controls="faq-ans-3"
+          >
+            <span>Apakah tersedia cicilan 0% untuk pembelian gadget flagship?</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                d="M6 9l6 6 6-6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <div id="faq-ans-3" class="faq-answer" hidden>
+            <p>
+              Tersedia program cicilan 0% dengan tenor hingga 24 bulan untuk
+              seluruh kategori gadget resmi di GadgetVerse.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div
+      id="toast-region"
+      class="toast-region"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+
     <section class="promo">
-      <span>Promo berlaku hingga Desember 2026</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path
+          d="M12 3l2.2 4.6L19 9.8l-4.8 2.2L12 16.6l-2.2-4.6L5 9.8l4.8-2.2L12 3Z"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.9"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <span>Promo Mega Sale berlaku hingga Desember 2026</span>
     </section>
 
     <footer id="footer">
       <div class="lower">
         <div class="social">
-          <span>📱</span>
-          <!-- <nav class="nav-foot">
-            <ul>
-              <li><a href="instagram.com" target="_blank">Instagram</a></li>
-              <li><a href="x.com" target="_blank">X</a></li>
-              <li><a href="tiktok.com" target="_blank">Tiktok</a></li>
-              <li><a href="facebook.com" target="_blank">Facebook</a></li>
-            </ul>
-          </nav> -->
+          <span class="footer-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path
+                d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm4 15h2"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
         </div>
         <h3>Gadgetverse Indonesia Ltd.</h3>
         <p>
@@ -392,7 +612,7 @@
           >
         </p>
         <div class="tag-itemv2">
-          <span>100% Original TAM & iBox</span>
+          <span>100% Original TAM &amp; iBox</span>
           <span>Cicilan 0% Hingga 24 Bulan</span>
           <span>Gratis Ongkir se-Indonesia</span>
           <span>Pengiriman Instan 3 Jam</span>
