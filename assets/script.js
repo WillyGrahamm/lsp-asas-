@@ -62,7 +62,8 @@ const productsData = [
     kategori: "Laptop",
     badgeText: "PROMO iBOX",
     badgeTipe: "sale",
-    gambar: "assets/images/macbook-air-m3.svg",
+    gambar:
+      "assets/images/Apple-MacBook-Air-2-up-hero-240304-lp.jpg.landing-big_2x.jpg",
     deskripsi:
       "Ultrabook super tipis tanpa kipas dengan chip Apple M3 8-core, layar Liquid Retina 13.6 inci tajam, MagSafe 3, dan daya tahan baterai hingga 18 jam.",
     tags: [
@@ -83,7 +84,7 @@ const productsData = [
     kategori: "Tablet",
     badgeText: "BARU HADIR",
     badgeTipe: "sale",
-    gambar: "assets/images/xiaomi-pad-7.svg",
+    gambar: "assets/images/Xiaomi Pad 7 256GB.jpg",
     deskripsi:
       "Tablet produktivitas dengan layar 11.2 inci 3.2K 144Hz jernih, chipset Snapdragon 7+ Gen 3 bertenaga, quad speaker Dolby Atmos, dan pengisian cepat 45W Turbo.",
     tags: [
@@ -104,7 +105,7 @@ const productsData = [
     kategori: "Tablet",
     badgeText: "GARANSI TAM",
     badgeTipe: "sale",
-    gambar: "assets/images/galaxy-tab-s9-fe.svg",
+    gambar: "assets/images/Samsung Galaxy Tab S9 FE 128GB.jpg",
     deskripsi:
       "Tablet tahan air dan debu bersertifikasi IP68 yang sudah termasuk S Pen presisi dalam paket penjualan, ideal untuk catatan kuliah maupun ilustrasi kreatif.",
     tags: [
@@ -125,7 +126,7 @@ const productsData = [
     kategori: "Tablet",
     badgeText: "FLAGSHIP TABLET",
     badgeTipe: "sale",
-    gambar: "assets/images/oneplus-pad-2.svg",
+    gambar: "assets/images/OnePlus Pad 2 256GB.jpg",
     deskripsi:
       "Tablet flagship bertenaga Snapdragon 8 Gen 3 dengan rasio layar 7:5 ReadFit 12.1 inci 3K 144Hz, 6 speaker imersif, dan baterai 9510mAh 67W SuperVOOC.",
     tags: [
@@ -146,7 +147,7 @@ const productsData = [
     kategori: "Smartwatch",
     badgeText: "STOK EKSKLUSIF",
     badgeTipe: "sale",
-    gambar: "assets/images/pixel-watch-3.svg",
+    gambar: "assets/images/Google Pixel Watch 3 45mm.jpg",
     deskripsi:
       "Smartwatch Wear OS 5 dengan layar Actua 2000 nits yang terang di bawah matahari, analitik lari & kebugaran Fitbit tingkat lanjut, serta deteksi denyut darurat.",
     tags: [
@@ -167,7 +168,7 @@ const productsData = [
     kategori: "Smartwatch",
     badgeText: "GARANSI RESMI",
     badgeTipe: "sale",
-    gambar: "assets/images/oppo-watch-x.svg",
+    gambar: "assets/images/OPPO Watch X Dual-Engine.jpg",
     deskripsi:
       "Smartwatch tangguh berlapis kaca Sapphire Crystal dan bodi stainless steel, arsitektur dual-engine hemat daya hingga 100 jam, serta GPS dual-frequency presisi.",
     tags: [
@@ -188,7 +189,7 @@ const productsData = [
     kategori: "Audio Flagship",
     badgeText: "BEST SELLER AUDIO",
     badgeTipe: "sale",
-    gambar: "assets/images/sony-wh1000xm5.svg",
+    gambar: "assets/images/Sony WH-1000XM5 Wireless ANC.jpg",
     deskripsi:
       "Headphone over-ear peredam bising terbaik di kelasnya dengan 8 mikrofon, prosesor ganda V1 + QN1, audio Hi-Res LDAC, serta baterai awet 30 jam.",
     tags: [
