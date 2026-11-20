@@ -163,11 +163,31 @@
             <li><a href="#brand">Brand Pilihan</a></li>
             <li><a href="#katalog">Katalog Gadget</a></li>
             <li><a href="#recc">Rekomendasi</a></li>
+            <li><a href="#layanan-resmi">Cek IMEI &amp; Tukar Tambah</a></li>
             <li><a href="#road">Layanan &amp; FAQ</a></li>
             <li><a href="#footer">Hubungi Kami</a></li>
           </ul>
         </nav>
         <div class="header-actions">
+          <button
+            class="wishlist-toggle"
+            id="wishlist-toggle"
+            type="button"
+            aria-label="Lihat produk favorit"
+            aria-pressed="false"
+          >
+            <span class="wishlist-toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                />
+              </svg>
+            </span>
+            <span id="wishlist-toggle-label">Favorit (0)</span>
+          </button>
           <button
             class="theme-toggle"
             id="theme-toggle"
@@ -257,16 +277,44 @@
               />
             </svg>
           </span>
-          <span>Gratis ongkir untuk pesananmu</span>
+          <span>Gratis ongkir ke seluruh Indonesia</span>
         </div>
-        <div class="cart-subtotal">
-          <span>Subtotal</span>
-          <strong id="cart-subtotal">Rp 0</strong>
+        <div class="cart-voucher">
+          <label for="cart-voucher-input" class="visually-hidden">Kode Voucher Promo</label>
+          <div class="voucher-input-row">
+            <input
+              type="text"
+              id="cart-voucher-input"
+              placeholder="Kode promo (mis. GADGETVERSE)"
+              autocomplete="off"
+            />
+            <button type="button" id="cart-voucher-apply">Terapkan</button>
+          </div>
+          <div id="cart-voucher-msg" class="voucher-msg" hidden></div>
         </div>
-        <button class="cart-checkout" type="button" disabled>
-          Checkout segera hadir
-        </button>
-        <p class="cart-secure">Belanja aman · Produk 100% original</p>
+        <div class="cart-breakdown">
+          <div class="cart-subtotal">
+            <span>Subtotal Produk</span>
+            <strong id="cart-subtotal">Rp 0</strong>
+          </div>
+          <div id="cart-discount-row" class="cart-discount-row" hidden>
+            <span>Diskon Voucher</span>
+            <strong id="cart-discount-val">-Rp 0</strong>
+          </div>
+          <div class="cart-total-row">
+            <span>Total Pembayaran</span>
+            <strong id="cart-grandtotal">Rp 0</strong>
+          </div>
+        </div>
+        <div class="cart-action-buttons">
+          <button id="cart-checkout-btn" class="cart-checkout" type="button">
+            Lanjut ke Pembayaran
+          </button>
+          <button id="cart-clear-btn" class="cart-clear-btn" type="button">
+            Kosongkan Keranjang
+          </button>
+        </div>
+        <p class="cart-secure">Belanja aman &amp; resmi · Jaminan TAM &amp; iBox 100%</p>
       </div>
     </aside>
 
@@ -351,25 +399,134 @@
       </div>
 
       <div class="live" data-reveal>
-        <h2>Temukan Gadget Impianmu</h2>
+        <div class="live-header">
+          <div>
+            <span class="live-badge">INTERACTIVE CATALOG EXPLORER</span>
+            <h2>Temukan Gadget Impianmu</h2>
+            <p>Filter berdasarkan kategori, rentang harga, ulasan, atau cari spesifikasi teknis favoritmu.</p>
+          </div>
+        </div>
+
         <div class="live-input">
           <label for="product-search" class="visually-hidden">
             Cari produk berdasarkan nama, brand, kategori, atau spesifikasi
           </label>
-          <input
-            id="product-search"
-            type="text"
-            placeholder="Cari nama, brand, kategori, atau spesifikasi (mis. Tablet, Apple, ANC)..."
-            aria-describedby="search-results"
-          />
+          <div class="search-input-wrapper">
+            <span class="search-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path
+                  d="M11 4a7 7 0 1 0 4.95 11.95L20 20"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <input
+              id="product-search"
+              type="text"
+              placeholder="Cari nama, brand, kategori, atau spesifikasi (mis. M3, Titanium, ANC, Tablet)..."
+              aria-describedby="search-results"
+              autocomplete="off"
+            />
+            <button
+              id="search-clear-btn"
+              type="button"
+              class="search-clear-btn"
+              aria-label="Hapus kata kunci pencarian"
+              hidden
+            >
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path
+                  d="M6 6l12 12M18 6 6 18"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+            <span class="search-kbd-hint" aria-hidden="true">Tekan <kbd>/</kbd></span>
+          </div>
         </div>
-        <div
-          class="category-filters"
-          id="category-filters"
-          role="group"
-          aria-label="Filter kategori produk"
-        ></div>
-        <p class="search-results" id="search-results" aria-live="polite"></p>
+
+        <div class="trending-searches" aria-label="Saran pencarian cepat">
+          <span class="trending-title">Pencarian Populer:</span>
+          <div class="trending-chips" id="trending-chips">
+            <button type="button" class="trend-chip" data-search-term="Apple">Apple iBox</button>
+            <button type="button" class="trend-chip" data-search-term="Titanium">Titanium</button>
+            <button type="button" class="trend-chip" data-search-term="Galaxy AI">Galaxy AI</button>
+            <button type="button" class="trend-chip" data-search-term="Chip M3">MacBook M3</button>
+            <button type="button" class="trend-chip" data-search-term="144Hz">Tablet 144Hz</button>
+            <button type="button" class="trend-chip" data-search-term="ANC">Noise Cancelling</button>
+          </div>
+        </div>
+
+        <div class="catalog-toolbar">
+          <div class="toolbar-block">
+            <span class="toolbar-label">Kategori:</span>
+            <div
+              class="category-filters"
+              id="category-filters"
+              role="group"
+              aria-label="Filter kategori produk"
+            ></div>
+          </div>
+
+          <div class="toolbar-block-secondary">
+            <div class="price-filter-group" id="price-filters" role="group" aria-label="Filter rentang budget">
+              <span class="toolbar-label">Budget:</span>
+              <div class="price-chips">
+                <button type="button" class="price-chip is-active" data-price="all" aria-pressed="true">Semua</button>
+                <button type="button" class="price-chip" data-price="under-6m" aria-pressed="false">&lt; 6 Jt</button>
+                <button type="button" class="price-chip" data-price="6m-12m" aria-pressed="false">6 - 12 Jt</button>
+                <button type="button" class="price-chip" data-price="above-12m" aria-pressed="false">&gt; 12 Jt</button>
+              </div>
+            </div>
+
+            <div class="sort-filter-group">
+              <label for="product-sort" class="toolbar-label">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path
+                    d="M3 6h18M6 12h12M10 18h4"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <span>Urutkan:</span>
+              </label>
+              <select id="product-sort" aria-label="Urutkan produk katalog">
+                <option value="featured">Rekomendasi Unggulan</option>
+                <option value="price-asc">Harga: Rendah ke Tinggi</option>
+                <option value="price-desc">Harga: Tinggi ke Rendah</option>
+                <option value="discount-desc">Diskon Terbesar</option>
+                <option value="rating-desc">Rating Tertinggi</option>
+                <option value="name-asc">Nama Produk (A - Z)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="search-feedback-bar">
+          <p class="search-results" id="search-results" aria-live="polite"></p>
+          <button id="reset-filters-btn" type="button" class="reset-filters-btn" hidden>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path
+                d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8m0 0V3m0 5h5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span>Reset Semua Filter</span>
+          </button>
+        </div>
       </div>
 
       <div class="content" id="main"></div>
@@ -567,6 +724,206 @@
         </div>
       </div>
     </section>
+
+    <section class="layanan-resmi" id="layanan-resmi" data-reveal>
+      <div class="section-heading">
+        <span class="section-eyebrow">LAYANAN RESMI EKSKLUSIF</span>
+        <h2>Verifikasi Garansi &amp; Simulasi Tukar Tambah</h2>
+        <p>
+          Transparansi penuh untuk kenyamanan berbelanja gadget flagship. Cek status garansi IMEI resmi atau hitung estimasi tukar tambah perangkat lamamu.
+        </p>
+      </div>
+
+      <div class="layanan-grid">
+        <!-- Interactive IMEI Checker Card -->
+        <article class="service-card imei-card">
+          <div class="service-card-header">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path
+                  d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <div>
+              <h3>Cek Status Garansi IMEI</h3>
+              <p>Verifikasi nomor IMEI / Serial Number terdaftar resmi distributor Indonesia.</p>
+            </div>
+          </div>
+
+          <div class="service-form">
+            <label for="imei-input" class="visually-hidden">Nomor IMEI atau Serial Number</label>
+            <div class="service-input-row">
+              <input
+                type="text"
+                id="imei-input"
+                placeholder="Masukkan 15 digit IMEI atau nomor seri..."
+                maxlength="18"
+                autocomplete="off"
+              />
+              <button type="button" id="imei-check-btn">Periksa</button>
+            </div>
+            <div class="imei-samples">
+              <span>Contoh serial:</span>
+              <button type="button" class="imei-sample-btn" data-sample="356789123456789">356789123456789 (iBox)</button>
+              <button type="button" class="imei-sample-btn" data-sample="R5CW10ABCDE">R5CW10ABCDE (SEIN)</button>
+            </div>
+          </div>
+
+          <div id="imei-result" class="service-result" hidden aria-live="polite"></div>
+        </article>
+
+        <!-- Interactive Trade-In Calculator Card -->
+        <article class="service-card tradein-card">
+          <div class="service-card-header">
+            <span class="service-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" focusable="false">
+                <path
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <div>
+              <h3>Kalkulator Tukar Tambah</h3>
+              <p>Dapatkan taksiran cashback instan untuk upgrade gadget lamamu ke seri terbaru.</p>
+            </div>
+          </div>
+
+          <div class="tradein-form">
+            <div class="tradein-fields">
+              <div class="field-item">
+                <label for="tradein-brand">Brand Perangkat Lama</label>
+                <select id="tradein-brand">
+                  <option value="apple">Apple iPhone</option>
+                  <option value="samsung">Samsung Galaxy</option>
+                  <option value="xiaomi">Xiaomi / Poco</option>
+                  <option value="oppo">OPPO</option>
+                </select>
+              </div>
+
+              <div class="field-item">
+                <label for="tradein-model">Perkiraan Model</label>
+                <select id="tradein-model">
+                  <option value="high">Flagship 1-2 Generasi Lalu (mis. iPhone 14 / S23)</option>
+                  <option value="mid">Mid-Range / Seri Populer (mis. iPhone 12 / A54)</option>
+                  <option value="entry">Seri Standar / Entry Flagship</option>
+                </select>
+              </div>
+
+              <div class="field-item">
+                <label for="tradein-condition">Kondisi Fisik &amp; Fungsi</label>
+                <select id="tradein-condition">
+                  <option value="grade-a">Grade A — Mulus 100%, Baterai Sehat &gt;85%</option>
+                  <option value="grade-b">Grade B — Lecet Pemakaian Halus, Semua Fitur Normal</option>
+                  <option value="grade-c">Grade C — Ada Baret / Jamur Tipis, Fungsi Normal</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="button" id="tradein-calc-btn" class="tradein-calc-btn">
+              Hitung Nilai Tukar Tambah
+            </button>
+          </div>
+
+          <div id="tradein-result" class="service-result" hidden aria-live="polite"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Floating Bottom Compare Dock -->
+    <aside id="compare-dock" class="compare-dock" aria-label="Bilah perbandingan produk" hidden>
+      <div class="compare-dock-inner">
+        <div class="compare-dock-header">
+          <span class="compare-dock-title">Bandingkan Produk</span>
+          <span id="compare-count-badge" class="compare-count-badge">0 / 3 dipilih</span>
+        </div>
+        <div id="compare-dock-items" class="compare-dock-items" aria-live="polite"></div>
+        <div class="compare-dock-btns">
+          <button id="compare-open-btn" class="compare-action-btn primary" type="button" disabled>
+            Bandingkan Sekarang
+          </button>
+          <button id="compare-clear-btn" class="compare-action-btn secondary" type="button">
+            Hapus Semua
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Product Comparison Modal -->
+    <button id="compare-modal-backdrop" class="modal-backdrop" type="button" aria-label="Tutup modal perbandingan" hidden></button>
+    <dialog
+      id="compare-modal"
+      class="app-modal compare-modal"
+      aria-labelledby="compare-modal-heading"
+      hidden
+    >
+      <div class="modal-header">
+        <div>
+          <span class="modal-eyebrow">HEAD-TO-HEAD SPECIFICATIONS</span>
+          <h2 id="compare-modal-heading">Perbandingan Spesifikasi Gadget</h2>
+        </div>
+        <button id="compare-modal-close" class="modal-close-btn" type="button" aria-label="Tutup perbandingan">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div id="compare-modal-body" class="modal-body compare-table-wrap" tabindex="0"></div>
+    </dialog>
+
+    <!-- Product Quick View / Detail Modal -->
+    <button id="detail-modal-backdrop" class="modal-backdrop" type="button" aria-label="Tutup detail produk" hidden></button>
+    <dialog
+      id="detail-modal"
+      class="app-modal detail-modal"
+      aria-labelledby="detail-modal-title"
+      hidden
+    >
+      <div class="modal-header">
+        <div>
+          <span id="detail-modal-badge" class="modal-eyebrow">PRODUK FLAGSHIP RESMI</span>
+          <h2 id="detail-modal-title">Detail Spesifikasi Produk</h2>
+        </div>
+        <button id="detail-modal-close" class="modal-close-btn" type="button" aria-label="Tutup detail produk">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div id="detail-modal-body" class="modal-body detail-modal-body" tabindex="0"></div>
+    </dialog>
+
+    <!-- Checkout Modal -->
+    <button id="checkout-modal-backdrop" class="modal-backdrop" type="button" aria-label="Tutup formulir checkout" hidden></button>
+    <dialog
+      id="checkout-modal"
+      class="app-modal checkout-modal"
+      aria-labelledby="checkout-modal-title"
+      hidden
+    >
+      <div class="modal-header">
+        <div>
+          <span class="modal-eyebrow">PEMESANAN RESMI</span>
+          <h2 id="checkout-modal-title">Penyelesaian Pesanan</h2>
+        </div>
+        <button id="checkout-modal-close" class="modal-close-btn" type="button" aria-label="Tutup formulir checkout">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div id="checkout-modal-body" class="modal-body checkout-modal-body" tabindex="0"></div>
+    </dialog>
 
     <div
       id="toast-region"

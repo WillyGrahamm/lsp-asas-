@@ -4,15 +4,15 @@
 
 ## Ringkasan Toko
 - **Nama Brand**: GadgetVerse Indonesia Ltd.
-- **Layanan**: Penjualan gadget original bergaransi resmi 100%, cicilan 0% hingga 24 bulan, gratis ongkir seluruh Indonesia, dan pengiriman instan 3 jam untuk area kota besar.
+- **Layanan Unggulan**: Penjualan gadget original bergaransi resmi 100%, cicilan 0% hingga 24 bulan, gratis ongkir seluruh Indonesia, pengiriman instan 3 jam tiba, verifikasi garansi IMEI resmi, serta kalkulator tukar tambah (trade-in) online.
 
 ## Brand Partner Resmi
-- Apple (iBox)
-- Samsung (TAM)
-- Xiaomi
+- Apple (iBox Indonesia)
+- Samsung (TAM / SEIN)
+- Xiaomi Indonesia
 - Google Pixel
 - OPPO (TAM)
-- Sony Audio
+- Sony Audio Indonesia
 - OnePlus
 
 ## Kategori & Produk Tersedia
@@ -21,4 +21,15 @@
 - **Laptop**: Apple MacBook Air 13" M3 256GB (Rp 16.499.000)
 - **Tablet**: Xiaomi Pad 7 256GB (Rp 5.499.000), Samsung Galaxy Tab S9 FE 128GB (Rp 6.999.000), OnePlus Pad 2 256GB (Rp 8.499.000)
 - **Smartwatch**: Google Pixel Watch 3 45mm (Rp 6.299.000), OPPO Watch X Dual-Engine (Rp 5.999.000)
-- **Audio Flagship**: Sony WH-1000XM5 Wireless ANC (Rp 5.199.000)
+- **Audio Flagship**: Sony WH-1000XM5 Wireless ANC (Rp 5.199.000), Apple AirPods Pro (2nd Gen) USB-C ANC (Rp 3.899.000)
+- **Aksesori**: Samsung 25W Battery Pack 20.000mAh (Rp 899.000)
+
+## Fitur Interaktif Katalog
+1. **Live Search & Keyboard Shortcut**: Pencarian instan berdasarkan nama, brand, chipset, spesifikasi teknis, atau tag dengan pintasan tombol `/`.
+2. **Filter Multi-Dimensi**: Filter kategori dinamis, rentang budget harga (< 6 Juta, 6-12 Juta, > 12 Juta), dan brand partner.
+3. **Multi-Criteria Sorting**: Urutkan berdasarkan Rekomendasi, Harga Terendah, Harga Tertinggi, Diskon Terbesar, Rating Tertinggi, dan Nama (A-Z).
+4. **Wishlist / Bookmark**: Simpan perangkat favorit dengan persistensi data lokal (`localStorage`).
+5. **Head-to-Head Comparison Matrix**: Perbandingan spesifikasi langsung hingga 3 produk berdampingan secara interaktif.
+6. **Quick View & Full Specs Modal**: Tampilan detail produk komprehensif, simulasi cicilan 0% per tenor, dan daftar kelengkapan kotak.
+7. **Keranjang & Checkout Interaktif**: Dukungan kode voucher promo (`GADGETVERSE`, `MEGASALE`, `IBOXRESMI`, `TRADEIN2026`), integrasi faktur pesanan resmi, dan konfirmasi WhatsApp.
+8. **Verifikasi IMEI & Kalkulator Tukar Tambah**: Validasi garansi resmi distributor dan penaksir nilai cashback trade-in.
