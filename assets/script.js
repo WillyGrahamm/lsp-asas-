@@ -1,5 +1,57 @@
 "use strict";
 
+const DESIGNS = [
+  {
+    id: "original",
+    name: "Original",
+    badge: "Classic Blue",
+    description: "Tampilan toko gadget modern bernuansa biru bersih.",
+    swatches: ["#f8fafc", "#2563eb", "#0f172a"],
+    favicon: "assets/favicon.svg",
+    themeColor: {
+      light: "#f8fafc",
+      dark: "#080d18",
+      drawerLight: "#ffffff",
+      drawerDark: "#111a2b",
+    },
+    gsapEase: "power3.out",
+  },
+  {
+    id: "mew",
+    name: "Kucing",
+    badge: "Tech-Cartoon",
+    description: "Tema stiker hangat dengan maskot kucing & ilustrasi vektor.",
+    swatches: ["#faf4ea", "#f8b84e", "#556841"],
+    favicon: "assets/favicon-mew.svg",
+    themeColor: {
+      light: "#FAF4EA",
+      dark: "#171613",
+      drawerLight: "#FFFFFF",
+      drawerDark: "#23211C",
+    },
+    gsapEase: "back.out(1.25)",
+  },
+  {
+    id: "space",
+    name: "Retro Space",
+    badge: "70s Mission",
+    description: "Estetika patch antariksa retro bernuansa navy, krem, dan oranye.",
+    swatches: ["#1d2c3a", "#e14b32", "#f5eccf"],
+    favicon: "assets/favicon-space.svg",
+    themeColor: {
+      light: "#F4ECD2",
+      dark: "#15202B",
+      drawerLight: "#FAF4DF",
+      drawerDark: "#1D2C3A",
+    },
+    gsapEase: "power4.out",
+  },
+];
+
+const DEFAULT_DESIGN_ID = "original";
+const THEME_STORAGE_KEY = "gadgetverse-theme";
+const DESIGN_STORAGE_KEY = "gadgetverse-design";
+
 const brandsData = [
   { nama: "Apple iBox", ticker: "apple", altName: "Apple" },
   { nama: "Samsung TAM", ticker: "samsung", altName: "Samsung" },
@@ -132,7 +184,7 @@ const productsData = [
     tags: [
       "Oneplus",
       "Snapdragon 8 Gen 3",
-      "12.1\" 3K 144Hz",
+      '12.1" 3K 144Hz',
       "9510mAh",
       "67W SuperVOOC",
       "Open Canvas",
@@ -203,6 +255,524 @@ const productsData = [
   },
 ];
 
+function createSvgIcon(pathDataList, viewBox = "0 0 24 24") {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", viewBox);
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+
+  pathDataList.forEach((d) => {
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", d);
+    path.setAttribute("fill", "none");
+    path.setAttribute("stroke", "currentColor");
+    path.setAttribute("stroke-width", "1.9");
+    path.setAttribute("stroke-linecap", "round");
+    path.setAttribute("stroke-linejoin", "round");
+    svg.appendChild(path);
+  });
+
+  return svg;
+}
+
+function safeStorageGet(key) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeStorageSet(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Ignore storage errors in restricted browsing contexts
+  }
+}
+
+function safeStorageRemove(key) {
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // Ignore storage errors in restricted browsing contexts
+  }
+}
+
+function getDesignConfig(designId) {
+  return (
+    DESIGNS.find((design) => design.id === designId) ||
+    DESIGNS.find((design) => design.id === DEFAULT_DESIGN_ID) ||
+    DESIGNS[0]
+  );
+}
+
+function getActiveDesignId() {
+  return getDesignConfig(document.documentElement.dataset.design).id;
+}
+
+const themeToggle = document.getElementById("theme-toggle");
+const themeToggleIcon = themeToggle?.querySelector(".theme-toggle-icon");
+const themeToggleLabel = document.getElementById("theme-toggle-label");
+const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+const colorSchemeMeta = document.querySelector('meta[name="color-scheme"]');
+const siteFavicon = document.getElementById("site-favicon");
+const toastRegion = document.getElementById("toast-region");
+
+const designToggle = document.getElementById("design-toggle");
+const designPanel = document.getElementById("design-panel");
+const designOptionsContainer = document.getElementById("design-options");
+const designActiveName = document.getElementById("design-active-name");
+
+const cartButton = document.getElementById("cart-id");
+const cartDrawer = document.getElementById("cart-drawer");
+const cartBackdrop = document.getElementById("cart-backdrop");
+const cartCloseButton = document.getElementById("cart-close");
+const cartItems = document.getElementById("cart-items");
+const cartItemCount = document.getElementById("cart-item-count");
+const cartSubtotal = document.getElementById("cart-subtotal");
+
+const systemColorSchemeQuery = window.matchMedia
+  ? window.matchMedia("(prefers-color-scheme: dark)")
+  : null;
+const supportsPopover = Object.hasOwn(HTMLElement.prototype, "popover");
+const supportsAnchorPosition =
+  typeof CSS !== "undefined" &&
+  typeof CSS.supports === "function" &&
+  CSS.supports("position-area: block-end");
+
+let themeTransitionTimeout;
+let toastTimeout;
+
+function triggerRadialTransition(originElement) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const root = document.documentElement;
+  if (originElement) {
+    const bounds = originElement.getBoundingClientRect();
+    root.style.setProperty(
+      "--theme-origin-x",
+      `${bounds.left + bounds.width / 2}px`,
+    );
+    root.style.setProperty(
+      "--theme-origin-y",
+      `${bounds.top + bounds.height / 2}px`,
+    );
+  } else {
+    root.style.setProperty("--theme-origin-x", "50%");
+    root.style.setProperty("--theme-origin-y", "50%");
+  }
+
+  root.classList.remove("theme-changing");
+  void root.offsetWidth;
+  root.classList.add("theme-changing");
+  window.clearTimeout(themeTransitionTimeout);
+  themeTransitionTimeout = window.setTimeout(() => {
+    root.classList.remove("theme-changing");
+  }, 750);
+}
+
+function showCartToast(message) {
+  if (!toastRegion) return;
+
+  const toast = document.createElement("div");
+  toast.className = "store-toast";
+
+  const iconWrap = document.createElement("span");
+  iconWrap.className = "store-toast-icon";
+  iconWrap.setAttribute("aria-hidden", "true");
+  iconWrap.appendChild(createSvgIcon(["M5 13l4 4L19 7"]));
+
+  const label = document.createElement("span");
+  label.textContent = message;
+
+  toast.append(iconWrap, label);
+  toastRegion.replaceChildren(toast);
+
+  window.clearTimeout(toastTimeout);
+  toastTimeout = window.setTimeout(() => {
+    toast.classList.add("is-leaving");
+    window.setTimeout(() => {
+      if (toast.parentNode === toastRegion) {
+        toast.remove();
+      }
+    }, 240);
+  }, 2400);
+}
+
+function syncThemeColor(drawerOpen = Boolean(cartDrawer && !cartDrawer.hidden)) {
+  if (!themeColorMeta) return;
+  const isDark = document.documentElement.dataset.theme === "dark";
+  const palette = getDesignConfig(getActiveDesignId()).themeColor;
+  if (drawerOpen) {
+    themeColorMeta.setAttribute(
+      "content",
+      isDark ? palette.drawerDark : palette.drawerLight,
+    );
+  } else {
+    themeColorMeta.setAttribute(
+      "content",
+      isDark ? palette.dark : palette.light,
+    );
+  }
+}
+
+function getSystemTheme() {
+  return systemColorSchemeQuery && systemColorSchemeQuery.matches
+    ? "dark"
+    : "light";
+}
+
+function getResolvedTheme() {
+  const stored = safeStorageGet(THEME_STORAGE_KEY);
+  if (stored === "dark" || stored === "light") {
+    return stored;
+  }
+  return getSystemTheme();
+}
+
+function applyThemeUI(theme, animate = false) {
+  const isDark = theme === "dark";
+  document.documentElement.dataset.theme = isDark ? "dark" : "light";
+
+  if (animate) {
+    triggerRadialTransition(themeToggle);
+  }
+
+  if (themeToggle) {
+    themeToggle.setAttribute("aria-pressed", String(isDark));
+    themeToggle.setAttribute(
+      "aria-label",
+      isDark ? "Aktifkan mode terang" : "Aktifkan mode gelap",
+    );
+  }
+
+  const sunPaths = [
+    "M12 3v2m0 14v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M3 12h2m14 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41",
+    "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z",
+  ];
+  const moonPaths = ["M20.35 15.35A9 9 0 1 1 8.65 3.65a7 7 0 0 0 11.7 11.7Z"];
+
+  if (themeToggleIcon) {
+    themeToggleIcon.replaceChildren(
+      createSvgIcon(isDark ? sunPaths : moonPaths),
+    );
+  }
+  if (themeToggleLabel) {
+    themeToggleLabel.textContent = isDark ? "Mode terang" : "Mode gelap";
+  }
+
+  syncThemeColor();
+}
+
+function syncColorSchemeMeta(storedValue) {
+  if (!colorSchemeMeta) return;
+  colorSchemeMeta.setAttribute(
+    "content",
+    storedValue === "dark" || storedValue === "light"
+      ? storedValue
+      : "light dark",
+  );
+}
+
+function handleThemeToggle(event) {
+  event.preventDefault();
+  const currentlyDark = document.documentElement.dataset.theme === "dark";
+  const targetTheme = currentlyDark ? "light" : "dark";
+  const systemTheme = getSystemTheme();
+
+  if (targetTheme === systemTheme) {
+    safeStorageRemove(THEME_STORAGE_KEY);
+    syncColorSchemeMeta(null);
+  } else {
+    safeStorageSet(THEME_STORAGE_KEY, targetTheme);
+    syncColorSchemeMeta(targetTheme);
+  }
+
+  applyThemeUI(targetTheme, true);
+}
+
+function renderDesignOptions() {
+  if (!designOptionsContainer) return;
+
+  const activeDesignId = getActiveDesignId();
+  const fragment = document.createDocumentFragment();
+
+  DESIGNS.forEach((design) => {
+    const option = document.createElement("button");
+    option.type = "button";
+    option.className = "design-option";
+    option.dataset.designOption = design.id;
+    option.setAttribute("aria-pressed", String(design.id === activeDesignId));
+
+    const swatch = document.createElement("span");
+    swatch.className = "design-swatch";
+    swatch.setAttribute("aria-hidden", "true");
+    design.swatches.forEach((color) => {
+      const dot = document.createElement("span");
+      dot.style.backgroundColor = color;
+      swatch.appendChild(dot);
+    });
+
+    const copy = document.createElement("span");
+    copy.className = "design-option-copy";
+
+    const head = document.createElement("span");
+    head.className = "design-option-head";
+
+    const name = document.createElement("span");
+    name.className = "design-option-name";
+    name.textContent = design.name;
+
+    const badge = document.createElement("span");
+    badge.className = "design-option-badge";
+    badge.textContent = design.badge;
+
+    head.append(name, badge);
+
+    const desc = document.createElement("span");
+    desc.className = "design-option-desc";
+    desc.textContent = design.description;
+
+    copy.append(head, desc);
+
+    const check = document.createElement("span");
+    check.className = "design-option-check";
+    check.setAttribute("aria-hidden", "true");
+    check.appendChild(createSvgIcon(["M5 13l4 4L19 7"]));
+
+    option.append(swatch, copy, check);
+    fragment.appendChild(option);
+  });
+
+  designOptionsContainer.replaceChildren(fragment);
+}
+
+function syncDesignUI(designId) {
+  const config = getDesignConfig(designId);
+  document.documentElement.dataset.design = config.id;
+
+  if (designActiveName) {
+    designActiveName.textContent = config.name;
+  }
+
+  if (siteFavicon) {
+    siteFavicon.setAttribute("href", config.favicon);
+  }
+
+  if (designOptionsContainer) {
+    designOptionsContainer
+      .querySelectorAll("button[data-design-option]")
+      .forEach((button) => {
+        button.setAttribute(
+          "aria-pressed",
+          String(button.dataset.designOption === config.id),
+        );
+      });
+  }
+
+  syncThemeColor();
+}
+
+function setDesign(designId, { animate = false, announce = false } = {}) {
+  const config = getDesignConfig(designId);
+  const changed = getActiveDesignId() !== config.id;
+
+  if (animate && changed) {
+    triggerRadialTransition(designToggle);
+  }
+
+  safeStorageSet(DESIGN_STORAGE_KEY, config.id);
+  syncDesignUI(config.id);
+
+  if (announce && changed) {
+    showCartToast(`Desain tampilan diubah ke ${config.name}`);
+  }
+}
+
+function isDesignPanelOpen() {
+  if (!designPanel) return false;
+  if (supportsPopover) {
+    return designPanel.matches(":popover-open");
+  }
+  return designPanel.classList.contains("is-open") && !designPanel.hidden;
+}
+
+function positionDesignPanelFallback() {
+  if (!designToggle || !designPanel || supportsAnchorPosition) return;
+  const triggerRect = designToggle.getBoundingClientRect();
+  const panelWidth = designPanel.offsetWidth || 280;
+  const panelHeight = designPanel.offsetHeight || 190;
+  const maxLeft = Math.max(12, window.innerWidth - panelWidth - 12);
+  const left = Math.min(Math.max(12, triggerRect.left), maxLeft);
+  let top = triggerRect.bottom + 8;
+
+  if (
+    top + panelHeight > window.innerHeight - 12 &&
+    triggerRect.top - panelHeight - 8 >= 12
+  ) {
+    top = triggerRect.top - panelHeight - 8;
+  }
+
+  designPanel.style.left = `${left}px`;
+  designPanel.style.top = `${top}px`;
+}
+
+function closeDesignPanel({ restoreFocus = false } = {}) {
+  if (!designPanel || !isDesignPanelOpen()) return;
+  if (supportsPopover) {
+    designPanel.hidePopover();
+  } else {
+    designPanel.classList.remove("is-open");
+    designPanel.hidden = true;
+    if (designToggle) {
+      designToggle.setAttribute("aria-expanded", "false");
+    }
+  }
+  if (restoreFocus && designToggle) {
+    designToggle.focus();
+  }
+}
+
+function openDesignPanelFallback() {
+  if (!designPanel || supportsPopover) return;
+  designPanel.hidden = false;
+  designPanel.classList.add("is-open");
+  if (designToggle) {
+    designToggle.setAttribute("aria-expanded", "true");
+  }
+  positionDesignPanelFallback();
+}
+
+function initDesignSwitcher() {
+  const initialDesign = getDesignConfig(
+    safeStorageGet(DESIGN_STORAGE_KEY) || DEFAULT_DESIGN_ID,
+  );
+  syncDesignUI(initialDesign.id);
+  renderDesignOptions();
+
+  if (!designToggle || !designPanel) return;
+
+  if (supportsPopover) {
+    designPanel.addEventListener("toggle", (event) => {
+      const open = event.newState === "open";
+      designToggle.setAttribute("aria-expanded", String(open));
+      if (open) {
+        window.requestAnimationFrame(positionDesignPanelFallback);
+      }
+    });
+  } else {
+    designPanel.hidden = true;
+    designToggle.removeAttribute("popovertarget");
+    designToggle.addEventListener("click", (event) => {
+      event.stopPropagation();
+      if (isDesignPanelOpen()) {
+        closeDesignPanel();
+      } else {
+        openDesignPanelFallback();
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      if (
+        isDesignPanelOpen() &&
+        !designPanel.contains(event.target) &&
+        !designToggle.contains(event.target)
+      ) {
+        closeDesignPanel();
+      }
+    });
+  }
+
+  if (designOptionsContainer) {
+    designOptionsContainer.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-design-option]");
+      if (!button) return;
+
+      const selectedId = button.dataset.designOption;
+      setDesign(selectedId, { animate: true, announce: true });
+      closeDesignPanel({ restoreFocus: event.detail === 0 });
+    });
+  }
+
+  window.addEventListener("resize", () => {
+    if (isDesignPanelOpen()) {
+      positionDesignPanelFallback();
+    }
+  });
+}
+
+function initScrollRulerFallback() {
+  const progressFill = document.getElementById("scroll-progress-fill");
+  if (!progressFill) return;
+
+  if (
+    typeof CSS !== "undefined" &&
+    typeof CSS.supports === "function" &&
+    CSS.supports("animation-timeline", "scroll()")
+  ) {
+    return;
+  }
+
+  const prefersReduced =
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (prefersReduced) return;
+
+  let frameRequested = false;
+
+  function updateRulerProgress() {
+    frameRequested = false;
+    const scrollable =
+      document.documentElement.scrollHeight - window.innerHeight;
+    const progress =
+      scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+    progressFill.style.transform = `scaleX(${progress})`;
+  }
+
+  function scheduleUpdate() {
+    if (frameRequested) return;
+    frameRequested = true;
+    window.requestAnimationFrame(updateRulerProgress);
+  }
+
+  updateRulerProgress();
+  window.addEventListener("scroll", scheduleUpdate, { passive: true });
+  window.addEventListener("resize", scheduleUpdate, { passive: true });
+}
+
+// Initialize Theme, Design & Scroll Ruler across index.html and 404.html
+const storedTheme = safeStorageGet(THEME_STORAGE_KEY);
+syncColorSchemeMeta(storedTheme);
+applyThemeUI(getResolvedTheme(), false);
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", handleThemeToggle);
+}
+
+if (systemColorSchemeQuery) {
+  systemColorSchemeQuery.addEventListener("change", () => {
+    if (!safeStorageGet(THEME_STORAGE_KEY)) {
+      applyThemeUI(getSystemTheme(), false);
+    }
+  });
+}
+
+window.addEventListener("storage", (event) => {
+  if (event.key === THEME_STORAGE_KEY) {
+    syncColorSchemeMeta(event.newValue);
+    applyThemeUI(getResolvedTheme(), false);
+  } else if (event.key === DESIGN_STORAGE_KEY) {
+    syncDesignUI(event.newValue || DEFAULT_DESIGN_ID);
+  }
+});
+
+initDesignSwitcher();
+initScrollRulerFallback();
+
+// =========================================================
+// Catalog, Search, Filters & Cart Drawer (index.html)
+// =========================================================
 function brandTicker(daftarBrand, elemenBrand) {
   if (!elemenBrand) return;
 
@@ -316,32 +886,40 @@ function getProducts(daftarProduk, elemenProduk) {
 }
 
 const totalElemen = document.querySelector(".brand-tag");
-brandTicker(brandsData, totalElemen);
 const elemenProduk = document.getElementById("main");
-getProducts(productsData, elemenProduk);
-
 const cari = document.querySelector(".live-input input");
 const searchResults = document.getElementById("search-results");
 const categoryFilters = document.getElementById("category-filters");
 let activeCategory = "all";
-
 let keranjang = [];
-const cartButton = document.getElementById("cart-id");
-const cartDrawer = document.getElementById("cart-drawer");
-const cartBackdrop = document.getElementById("cart-backdrop");
-const cartCloseButton = document.getElementById("cart-close");
-const cartItems = document.getElementById("cart-items");
-const cartItemCount = document.getElementById("cart-item-count");
-const cartSubtotal = document.getElementById("cart-subtotal");
-const themeToggle = document.getElementById("theme-toggle");
-const themeToggleIcon = themeToggle.querySelector(".theme-toggle-icon");
-const themeToggleLabel = document.getElementById("theme-toggle-label");
-const themeColorMeta = document.querySelector('meta[name="theme-color"]');
-const toastRegion = document.getElementById("toast-region");
-let themeTransitionTimeout;
-let toastTimeout;
+const addedButtonTimers = new WeakMap();
+
+function formatHarga(harga) {
+  return `Rp ${harga.toLocaleString("id-ID")}`;
+}
+
+function updateDocumentTitle() {
+  if (!elemenProduk || !cari) return;
+  const defaultTitle = "GadgetVerse — Katalog Gadget & Aksesori Resmi";
+  if (cartDrawer && !cartDrawer.hidden) {
+    const totalItem = keranjang.reduce((total, item) => total + item.quantity, 0);
+    document.title = `Keranjang (${totalItem}) | GadgetVerse`;
+    return;
+  }
+  const query = cari.value.trim();
+  if (activeCategory !== "all" && query) {
+    document.title = `${activeCategory} · "${query}" | GadgetVerse`;
+  } else if (activeCategory !== "all") {
+    document.title = `${activeCategory} · Katalog | GadgetVerse`;
+  } else if (query) {
+    document.title = `Cari "${query}" | GadgetVerse`;
+  } else {
+    document.title = defaultTitle;
+  }
+}
 
 function renderCategoryFilters() {
+  if (!categoryFilters) return;
   const categories = [...new Set(productsData.map((product) => product.kategori))];
   const options = [{ value: "all", label: "Semua produk" }].concat(
     categories.map((category) => ({ value: category, label: category })),
@@ -362,6 +940,7 @@ function renderCategoryFilters() {
 }
 
 function syncBrandSelectionUI() {
+  if (!totalElemen || !cari) return;
   const query = cari.value.trim().toLocaleLowerCase("id-ID");
   totalElemen.querySelectorAll(".brand-item").forEach((brandCard) => {
     const label =
@@ -373,26 +952,8 @@ function syncBrandSelectionUI() {
   });
 }
 
-function updateDocumentTitle() {
-  const defaultTitle = "GadgetVerse — Katalog Gadget & Aksesori Resmi";
-  if (cartDrawer && !cartDrawer.hidden) {
-    const totalItem = keranjang.reduce((total, item) => total + item.quantity, 0);
-    document.title = `Keranjang (${totalItem}) | GadgetVerse`;
-    return;
-  }
-  const query = cari.value.trim();
-  if (activeCategory !== "all" && query) {
-    document.title = `${activeCategory} · "${query}" | GadgetVerse`;
-  } else if (activeCategory !== "all") {
-    document.title = `${activeCategory} · Katalog | GadgetVerse`;
-  } else if (query) {
-    document.title = `Cari "${query}" | GadgetVerse`;
-  } else {
-    document.title = defaultTitle;
-  }
-}
-
 function animateProductCards() {
+  if (!elemenProduk) return;
   const cards = elemenProduk.querySelectorAll(".card");
   cards.forEach((card, index) => {
     card.style.setProperty("--card-index", String(index));
@@ -403,15 +964,17 @@ function animateProductCards() {
     window.matchMedia("(prefers-reduced-motion: no-preference)").matches &&
     cards.length > 0
   ) {
+    const activeDesign = getDesignConfig(getActiveDesignId());
+    const isMew = activeDesign.id === "mew";
     window.gsap.fromTo(
       cards,
-      { y: 20, opacity: 0 },
+      isMew ? { y: 22, opacity: 0, scale: 0.97 } : { y: 20, opacity: 0 },
       {
         y: 0,
         opacity: 1,
-        duration: 0.45,
+        ...(isMew ? { scale: 1, duration: 0.5 } : { duration: 0.45 }),
         stagger: 0.055,
-        ease: "power3.out",
+        ease: activeDesign.gsapEase,
         clearProps: "transform,opacity",
       },
     );
@@ -419,6 +982,8 @@ function animateProductCards() {
 }
 
 function renderFilteredProducts() {
+  if (!elemenProduk || !cari || !searchResults) return;
+
   const input = cari.value.trim().toLocaleLowerCase("id-ID");
   const keywords = input.split(/\s+/).filter(Boolean);
   const hasilFilter = productsData.filter((product) => {
@@ -473,7 +1038,7 @@ function handleSearch() {
 
 function handleCategoryFilter(event) {
   const button = event.target.closest("button[data-category]");
-  if (!button) return;
+  if (!button || !categoryFilters) return;
 
   activeCategory = button.dataset.category;
   categoryFilters
@@ -489,7 +1054,7 @@ function handleCategoryFilter(event) {
 
 function handleBrandFilter(event) {
   const brandCard = event.target.closest(".brand-item");
-  if (!brandCard) return;
+  if (!brandCard || !cari || !categoryFilters) return;
 
   const brandName = brandCard.querySelector("span")?.textContent.trim();
   if (!brandName) return;
@@ -522,127 +1087,8 @@ function handleBrandFilter(event) {
   }
 }
 
-renderCategoryFilters();
-renderFilteredProducts();
-cari.addEventListener("input", handleSearch);
-categoryFilters.addEventListener("click", handleCategoryFilter);
-totalElemen.addEventListener("click", handleBrandFilter);
-
-function createSvgIcon(pathDataList, viewBox = "0 0 24 24") {
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("viewBox", viewBox);
-  svg.setAttribute("aria-hidden", "true");
-  svg.setAttribute("focusable", "false");
-
-  pathDataList.forEach((d) => {
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", d);
-    path.setAttribute("fill", "none");
-    path.setAttribute("stroke", "currentColor");
-    path.setAttribute("stroke-width", "1.9");
-    path.setAttribute("stroke-linecap", "round");
-    path.setAttribute("stroke-linejoin", "round");
-    svg.appendChild(path);
-  });
-
-  return svg;
-}
-
-function syncThemeColor(drawerOpen = !cartDrawer.hidden) {
-  if (!themeColorMeta) return;
-  const isDark = document.documentElement.dataset.theme === "dark";
-  if (drawerOpen) {
-    themeColorMeta.setAttribute("content", isDark ? "#111a2b" : "#ffffff");
-  } else {
-    themeColorMeta.setAttribute("content", isDark ? "#080d18" : "#f8fafc");
-  }
-}
-
-function setTheme(theme, animate = false) {
-  const isDark = theme === "dark";
-  const root = document.documentElement;
-
-  if (animate && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    const toggleBounds = themeToggle.getBoundingClientRect();
-    root.style.setProperty(
-      "--theme-origin-x",
-      `${toggleBounds.left + toggleBounds.width / 2}px`,
-    );
-    root.style.setProperty(
-      "--theme-origin-y",
-      `${toggleBounds.top + toggleBounds.height / 2}px`,
-    );
-    root.classList.add("theme-changing");
-    window.clearTimeout(themeTransitionTimeout);
-    themeTransitionTimeout = window.setTimeout(() => {
-      root.classList.remove("theme-changing");
-    }, 750);
-  }
-
-  document.documentElement.dataset.theme = isDark ? "dark" : "light";
-  themeToggle.setAttribute("aria-pressed", String(isDark));
-  themeToggle.setAttribute(
-    "aria-label",
-    isDark ? "Aktifkan mode terang" : "Aktifkan mode gelap",
-  );
-  const sunPaths = [
-    "M12 3v2m0 14v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M3 12h2m14 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41",
-    "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z",
-  ];
-  const moonPaths = ["M20.35 15.35A9 9 0 1 1 8.65 3.65a7 7 0 0 0 11.7 11.7Z"];
-  themeToggleIcon.replaceChildren(
-    createSvgIcon(isDark ? sunPaths : moonPaths),
-  );
-  themeToggleLabel.textContent = isDark ? "Mode terang" : "Mode gelap";
-  localStorage.setItem("gadgetverse-theme", isDark ? "dark" : "light");
-  syncThemeColor();
-}
-
-function handleThemeToggle(event) {
-  event.preventDefault();
-  setTheme(
-    document.documentElement.dataset.theme === "dark" ? "light" : "dark",
-    true,
-  );
-}
-
-const savedTheme = localStorage.getItem("gadgetverse-theme");
-setTheme(savedTheme === "dark" ? "dark" : "light");
-themeToggle.addEventListener("click", handleThemeToggle);
-
-function formatHarga(harga) {
-  return `Rp ${harga.toLocaleString("id-ID")}`;
-}
-
-function showCartToast(message) {
-  if (!toastRegion) return;
-
-  const toast = document.createElement("div");
-  toast.className = "store-toast";
-
-  const iconWrap = document.createElement("span");
-  iconWrap.className = "store-toast-icon";
-  iconWrap.setAttribute("aria-hidden", "true");
-  iconWrap.appendChild(createSvgIcon(["M5 13l4 4L19 7"]));
-
-  const label = document.createElement("span");
-  label.textContent = message;
-
-  toast.append(iconWrap, label);
-  toastRegion.replaceChildren(toast);
-
-  window.clearTimeout(toastTimeout);
-  toastTimeout = window.setTimeout(() => {
-    toast.classList.add("is-leaving");
-    window.setTimeout(() => {
-      if (toast.parentNode === toastRegion) {
-        toast.remove();
-      }
-    }, 240);
-  }, 2400);
-}
-
 function updateCartSummary() {
+  if (!cartButton || !cartItemCount || !cartSubtotal) return;
   const totalItem = keranjang.reduce((total, item) => total + item.quantity, 0);
   const subtotal = keranjang.reduce(
     (total, item) => total + item.product.harga * item.quantity,
@@ -654,7 +1100,43 @@ function updateCartSummary() {
   updateDocumentTitle();
 }
 
+function openCart() {
+  if (!cartDrawer || !cartBackdrop || !cartButton || !cartCloseButton) return;
+  cartDrawer.hidden = false;
+  cartBackdrop.hidden = false;
+  document.body.classList.add("cart-open");
+  cartButton.setAttribute("aria-expanded", "true");
+  cartDrawer.setAttribute("aria-hidden", "false");
+  syncThemeColor(true);
+  updateDocumentTitle();
+  window.requestAnimationFrame(() => {
+    cartDrawer.classList.add("is-open");
+    cartBackdrop.classList.add("is-visible");
+  });
+  cartCloseButton.focus();
+}
+
+function closeCart() {
+  if (!cartDrawer || !cartBackdrop || !cartButton || cartDrawer.hidden) return;
+
+  cartDrawer.classList.remove("is-open");
+  cartBackdrop.classList.remove("is-visible");
+  document.body.classList.remove("cart-open");
+  cartButton.setAttribute("aria-expanded", "false");
+  cartDrawer.setAttribute("aria-hidden", "true");
+  syncThemeColor(false);
+  window.setTimeout(() => {
+    if (!cartDrawer.classList.contains("is-open")) {
+      cartDrawer.hidden = true;
+      cartBackdrop.hidden = true;
+      updateDocumentTitle();
+      cartButton.focus();
+    }
+  }, 300);
+}
+
 function renderKeranjang() {
+  if (!cartItems) return;
   const fragmen = document.createDocumentFragment();
 
   keranjang.forEach(({ product, quantity }, index) => {
@@ -769,47 +1251,17 @@ function renderKeranjang() {
   }
 }
 
-function openCart() {
-  cartDrawer.hidden = false;
-  cartBackdrop.hidden = false;
-  document.body.classList.add("cart-open");
-  cartButton.setAttribute("aria-expanded", "true");
-  cartDrawer.setAttribute("aria-hidden", "false");
-  syncThemeColor(true);
-  updateDocumentTitle();
-  window.requestAnimationFrame(() => {
-    cartDrawer.classList.add("is-open");
-    cartBackdrop.classList.add("is-visible");
-  });
-  cartCloseButton.focus();
-}
-
-function closeCart() {
-  if (cartDrawer.hidden) return;
-
-  cartDrawer.classList.remove("is-open");
-  cartBackdrop.classList.remove("is-visible");
-  document.body.classList.remove("cart-open");
-  cartButton.setAttribute("aria-expanded", "false");
-  cartDrawer.setAttribute("aria-hidden", "true");
-  syncThemeColor(false);
-  window.setTimeout(() => {
-    if (!cartDrawer.classList.contains("is-open")) {
-      cartDrawer.hidden = true;
-      cartBackdrop.hidden = true;
-      updateDocumentTitle();
-      cartButton.focus();
-    }
-  }, 300);
-}
-
 function handleDocumentKeydown(event) {
   if (event.key === "Escape") {
+    if (isDesignPanelOpen() && !supportsPopover) {
+      closeDesignPanel({ restoreFocus: true });
+      return;
+    }
     closeCart();
     return;
   }
 
-  if (event.key !== "Tab" || cartDrawer.hidden) return;
+  if (event.key !== "Tab" || !cartDrawer || cartDrawer.hidden) return;
 
   const elemenFokus = cartDrawer.querySelectorAll(
     'button:not([disabled]), [href], input:not([disabled]), [tabindex]:not([tabindex="-1"])',
@@ -826,13 +1278,11 @@ function handleDocumentKeydown(event) {
   }
 }
 
-cartButton.addEventListener("click", openCart);
-cartCloseButton.addEventListener("click", closeCart);
-cartBackdrop.addEventListener("click", closeCart);
-document.addEventListener("keydown", handleDocumentKeydown);
-
 function handleBeli(event) {
-  const beliTerpilih = event.target.dataset.ticker;
+  const button = event.target.closest('button[value="hlight"]');
+  if (!button) return;
+
+  const beliTerpilih = button.dataset.ticker;
   const produkTerpilih = productsData.find(
     (item) => item.ticker === beliTerpilih,
   );
@@ -851,12 +1301,53 @@ function handleBeli(event) {
 
   renderKeranjang();
   showCartToast(`${produkTerpilih.nama} ditambahkan ke keranjang`);
-  cartButton.classList.add("getpulse");
-  cartButton.addEventListener(
-    "animationend",
-    () => cartButton.classList.remove("getpulse"),
-    { once: true },
-  );
+
+  button.classList.add("is-added");
+  const addedLabel = document.createElement("span");
+  addedLabel.textContent = "Ditambahkan";
+  button.replaceChildren(createSvgIcon(["M5 13l4 4L19 7"]), addedLabel);
+
+  const prevTimer = addedButtonTimers.get(button);
+  if (prevTimer) window.clearTimeout(prevTimer);
+  const nextTimer = window.setTimeout(() => {
+    button.classList.remove("is-added");
+    button.textContent = "Beli Sekarang";
+  }, 1250);
+  addedButtonTimers.set(button, nextTimer);
+
+  if (cartButton) {
+    cartButton.classList.add("getpulse");
+    cartButton.addEventListener(
+      "animationend",
+      () => cartButton.classList.remove("getpulse"),
+      { once: true },
+    );
+  }
+}
+
+function animateCartItemRemoval(itemElement, ticker) {
+  if (!itemElement || itemElement.classList.contains("is-removing")) return;
+
+  itemElement.classList.add("is-removing");
+  let removalComplete = false;
+
+  function finishRemoval() {
+    if (removalComplete) return;
+    removalComplete = true;
+    keranjang = keranjang.filter((item) => item.product.ticker !== ticker);
+    renderKeranjang();
+  }
+
+  if (
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+    itemElement.getAnimations().length === 0
+  ) {
+    finishRemoval();
+    return;
+  }
+
+  itemElement.addEventListener("animationend", finishRemoval, { once: true });
+  window.setTimeout(finishRemoval, 300);
 }
 
 function handleCartQuantity(event) {
@@ -893,46 +1384,24 @@ function handleCartQuantity(event) {
   updateCartSummary();
 }
 
-function animateCartItemRemoval(itemElement, ticker) {
-  if (!itemElement || itemElement.classList.contains("is-removing")) return;
-
-  itemElement.classList.add("is-removing");
-  let removalComplete = false;
-
-  function finishRemoval() {
-    if (removalComplete) return;
-    removalComplete = true;
-    keranjang = keranjang.filter((item) => item.product.ticker !== ticker);
-    renderKeranjang();
-  }
-
-  if (
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-    itemElement.getAnimations().length === 0
-  ) {
-    finishRemoval();
-    return;
-  }
-
-  itemElement.addEventListener("animationend", finishRemoval, { once: true });
-  window.setTimeout(finishRemoval, 300);
-}
-
 function handleDeskripsi(event) {
-  const kartu = event.target.closest(".card");
+  const button = event.target.closest('button[value="nhlight"]');
+  if (!button) return;
+
+  const kartu = button.closest(".card");
   const deskTerpilih = kartu.querySelector(".container-desk");
   deskTerpilih.hidden = !deskTerpilih.hidden;
 
   const deskTerbuka = !deskTerpilih.hidden;
-  event.target.setAttribute("aria-expanded", String(deskTerbuka));
+  button.setAttribute("aria-expanded", String(deskTerbuka));
   deskTerpilih.setAttribute("aria-expanded", String(deskTerbuka));
 }
 
 function handleAllCard(event) {
-  if (event.target.matches(`button[value="hlight"]`)) {
+  if (event.target.closest('button[value="hlight"]')) {
     handleBeli(event);
   }
-  if (event.target.matches(`button[value="nhlight"]`)) {
+  if (event.target.closest('button[value="nhlight"]')) {
     handleDeskripsi(event);
   }
 }
@@ -970,6 +1439,8 @@ function initScrollAnimations() {
   ).matches;
   const revealTargets = document.querySelectorAll("[data-reveal]");
 
+  if (revealTargets.length === 0) return;
+
   if (prefersReduced || !("IntersectionObserver" in window)) {
     revealTargets.forEach((el) => el.classList.add("is-revealed"));
     return;
@@ -983,14 +1454,15 @@ function initScrollAnimations() {
         target.classList.add("is-revealed");
 
         if (window.gsap) {
+          const activeDesign = getDesignConfig(getActiveDesignId());
           window.gsap.fromTo(
             target,
             { y: 24, opacity: 0 },
             {
               y: 0,
               opacity: 1,
-              duration: 0.6,
-              ease: "power3.out",
+              duration: activeDesign.id === "mew" ? 0.62 : 0.6,
+              ease: activeDesign.id === "mew" ? "back.out(1.15)" : activeDesign.gsapEase,
               clearProps: "transform,opacity",
             },
           );
@@ -1004,19 +1476,42 @@ function initScrollAnimations() {
   revealTargets.forEach((target) => observer.observe(target));
 
   if (window.gsap) {
+    const activeDesign = getDesignConfig(getActiveDesignId());
     window.gsap.fromTo(
       ".hero-content > *, .hero-gadget",
-      { y: 18, opacity: 0 },
+      { y: activeDesign.id === "mew" ? 20 : 18, opacity: 0 },
       {
         y: 0,
         opacity: 1,
         duration: 0.65,
         stagger: 0.08,
-        ease: "power3.out",
+        ease: activeDesign.id === "mew" ? "back.out(1.2)" : activeDesign.gsapEase,
         clearProps: "transform,opacity",
       },
     );
   }
+}
+
+document.addEventListener("keydown", handleDocumentKeydown);
+
+if (totalElemen && elemenProduk && cari && categoryFilters) {
+  brandTicker(brandsData, totalElemen);
+  getProducts(productsData, elemenProduk);
+  renderCategoryFilters();
+  renderFilteredProducts();
+
+  cari.addEventListener("input", handleSearch);
+  categoryFilters.addEventListener("click", handleCategoryFilter);
+  totalElemen.addEventListener("click", handleBrandFilter);
+  elemenProduk.addEventListener("click", handleAllCard);
+}
+
+if (cartButton && cartCloseButton && cartBackdrop && cartItems) {
+  cartButton.addEventListener("click", openCart);
+  cartCloseButton.addEventListener("click", closeCart);
+  cartBackdrop.addEventListener("click", closeCart);
+  cartItems.addEventListener("click", handleCartQuantity);
+  renderKeranjang();
 }
 
 const heroActions = document.querySelector(".button-upper");
@@ -1029,7 +1524,4 @@ if (faqContainer) {
   faqContainer.addEventListener("click", handleFaqToggle);
 }
 
-elemenProduk.addEventListener("click", handleAllCard);
-cartItems.addEventListener("click", handleCartQuantity);
-renderKeranjang();
 window.addEventListener("DOMContentLoaded", initScrollAnimations);

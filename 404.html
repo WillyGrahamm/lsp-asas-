@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id">
+<html lang="id" data-design="original">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,20 +10,170 @@
       content="Halaman tidak ditemukan di GadgetVerse Indonesia."
     />
     <title>404 — Halaman Tidak Ditemukan | GadgetVerse</title>
-    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
-    <link rel="stylesheet" href="assets/style.css" />
+    <link
+      id="site-favicon"
+      rel="icon"
+      type="image/svg+xml"
+      href="assets/favicon.svg"
+    />
     <script>
-      if (localStorage.getItem("gadgetverse-theme") === "dark") {
-        document.documentElement.dataset.theme = "dark";
-        const meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute("content", "#080d18");
-      }
+      try {
+        var savedTheme = localStorage.getItem("gadgetverse-theme");
+        var savedDesign = localStorage.getItem("gadgetverse-design");
+        var design =
+          savedDesign === "mew" || savedDesign === "space"
+            ? savedDesign
+            : "original";
+        var root = document.documentElement;
+        root.dataset.design = design;
+
+        var prefersDark =
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+        var resolvedTheme =
+          savedTheme === "dark" || savedTheme === "light"
+            ? savedTheme
+            : prefersDark
+              ? "dark"
+              : "light";
+
+        if (savedTheme === "dark" || savedTheme === "light") {
+          var schemeMeta = document.querySelector('meta[name="color-scheme"]');
+          if (schemeMeta) schemeMeta.setAttribute("content", savedTheme);
+        }
+        root.dataset.theme = resolvedTheme;
+
+        var themeMeta = document.querySelector('meta[name="theme-color"]');
+        if (themeMeta) {
+          var themeColors = {
+            original: { light: "#f8fafc", dark: "#080d18" },
+            mew: { light: "#FAF4EA", dark: "#171613" },
+            space: { light: "#F4ECD2", dark: "#15202B" },
+          };
+          themeMeta.setAttribute("content", themeColors[design][resolvedTheme]);
+        }
+
+        var favicon = document.getElementById("site-favicon");
+        if (favicon) {
+          if (design === "mew") {
+            favicon.setAttribute("href", "assets/favicon-mew.svg");
+          } else if (design === "space") {
+            favicon.setAttribute("href", "assets/favicon-space.svg");
+          }
+        }
+      } catch (e) {}
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Fredoka:wght@500;600;700&family=JetBrains+Mono:wght@500;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="assets/style.css" />
+    <script src="assets/script.js" defer></script>
   </head>
   <body class="not-found-page">
+    <header>
+      <div class="upper">
+        <div class="header-brand">
+          <div class="design-switcher">
+            <button
+              type="button"
+              id="design-toggle"
+              class="design-toggle"
+              popovertarget="design-panel"
+              aria-controls="design-panel"
+              aria-expanded="false"
+            >
+              <span class="design-toggle-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path
+                    d="M4 5.5A1.5 1.5 0 0 1 5.5 4h5A1.5 1.5 0 0 1 12 5.5v5a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 10.5v-5Zm0 8A1.5 1.5 0 0 1 5.5 12h5a1.5 1.5 0 0 1 1.5 1.5v5A1.5 1.5 0 0 1 10.5 20h-5A1.5 1.5 0 0 1 4 18.5v-5Zm10-8A1.5 1.5 0 0 1 15.5 4h3A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 14 18.5v-13Z"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.9"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span class="design-toggle-text">
+                <span class="design-toggle-kicker">Desain</span>
+                <strong id="design-active-name">Original</strong>
+              </span>
+              <span class="visually-hidden"> — ganti mode tampilan</span>
+              <span class="design-toggle-chevron" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                  <path
+                    d="M6 9l6 6 6-6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.1"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+            <div
+              id="design-panel"
+              popover="auto"
+              class="design-panel"
+              role="region"
+              aria-labelledby="design-panel-title"
+            >
+              <div class="design-panel-header">
+                <span class="design-panel-eyebrow">GAYA TAMPILAN</span>
+                <p id="design-panel-title">Pilih Desain GadgetVerse</p>
+              </div>
+              <div
+                class="design-options"
+                id="design-options"
+                role="group"
+                aria-label="Pilihan desain tampilan"
+              ></div>
+            </div>
+          </div>
+
+          <a href="index.html" class="side-logo">
+            <span>Gadgetverse</span>
+            <p>Official Tech Store</p>
+          </a>
+        </div>
+
+        <div class="header-actions">
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            type="button"
+            aria-label="Aktifkan mode gelap"
+            aria-pressed="false"
+          >
+            <span class="theme-toggle-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                  d="M20.35 15.35A9 9 0 1 1 8.65 3.65a7 7 0 0 0 11.7 11.7Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+            <span id="theme-toggle-label">Mode gelap</span>
+          </button>
+        </div>
+      </div>
+      <div class="scroll-ruler" aria-hidden="true">
+        <div class="scroll-progress-fill" id="scroll-progress-fill"></div>
+        <div class="scroll-ruler-ticks"></div>
+      </div>
+    </header>
+
     <main class="not-found-shell">
       <div class="not-found-illustration" aria-hidden="true">
-        <svg viewBox="0 0 24 24" focusable="false">
+        <svg class="not-found-icon-original" viewBox="0 0 24 24" focusable="false">
           <path
             d="M9.5 3h5a2.5 2.5 0 0 1 2.5 2.5v13a2.5 2.5 0 0 1-2.5 2.5h-5A2.5 2.5 0 0 1 7 18.5v-13A2.5 2.5 0 0 1 9.5 3ZM3 3l18 18"
             fill="none"
@@ -31,6 +181,105 @@
             stroke-width="1.8"
             stroke-linecap="round"
             stroke-linejoin="round"
+          />
+        </svg>
+
+        <svg class="not-found-art-mew" viewBox="0 0 180 140" focusable="false">
+          <circle cx="90" cy="72" r="56" fill="#F8B84E" opacity="0.35" />
+          <rect
+            x="48"
+            y="26"
+            width="84"
+            height="96"
+            rx="20"
+            fill="#556841"
+            stroke="#1E1E1E"
+            stroke-width="3.5"
+          />
+          <rect
+            x="58"
+            y="36"
+            width="64"
+            height="68"
+            rx="13"
+            fill="#FAF4EA"
+            stroke="#1E1E1E"
+            stroke-width="2.5"
+          />
+          <circle cx="78" cy="64" r="4.5" fill="#1E1E1E" />
+          <circle cx="102" cy="64" r="4.5" fill="#1E1E1E" />
+          <path
+            d="M78 82c4-5 20-5 24 0"
+            fill="none"
+            stroke="#DF6C47"
+            stroke-width="3.5"
+            stroke-linecap="round"
+          />
+          <circle cx="90" cy="113" r="3.5" fill="#FAF4EA" />
+          <circle
+            cx="132"
+            cy="34"
+            r="16"
+            fill="#F8B84E"
+            stroke="#1E1E1E"
+            stroke-width="3"
+          />
+          <path
+            d="M128 30c0-3 8-3 8 1 0 3-4 4-4 6m0 4h.01"
+            fill="none"
+            stroke="#1E1E1E"
+            stroke-width="2.8"
+            stroke-linecap="round"
+          />
+        </svg>
+
+        <svg class="not-found-art-space" viewBox="0 0 180 140" focusable="false">
+          <circle
+            cx="90"
+            cy="72"
+            r="56"
+            fill="#1D2C3A"
+            stroke="#E14B32"
+            stroke-width="4"
+          />
+          <path
+            d="M46 92h88M54 102h72"
+            stroke="#E14B32"
+            stroke-width="3.5"
+            stroke-linecap="round"
+            opacity="0.8"
+          />
+          <ellipse
+            cx="90"
+            cy="68"
+            rx="44"
+            ry="14"
+            transform="rotate(-18 90 68)"
+            fill="none"
+            stroke="#EE9B31"
+            stroke-width="4"
+          />
+          <circle cx="90" cy="68" r="21" fill="#F5ECCF" />
+          <path
+            d="M72 72h36"
+            stroke="#47A7D6"
+            stroke-width="3.5"
+            stroke-linecap="round"
+          />
+          <circle
+            cx="134"
+            cy="34"
+            r="16"
+            fill="#E14B32"
+            stroke="#F5ECCF"
+            stroke-width="2.5"
+          />
+          <path
+            d="M130 30c0-3 8-3 8 1 0 3-4 4-4 6m0 4h.01"
+            fill="none"
+            stroke="#F5ECCF"
+            stroke-width="2.8"
+            stroke-linecap="round"
           />
         </svg>
       </div>
@@ -48,7 +297,7 @@
               d="M3 11.5 12 4l9 7.5M5 10v10h5v-6h4v6h5V10"
               fill="none"
               stroke="currentColor"
-              stroke-width="1.9"
+              stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
             />
@@ -61,7 +310,7 @@
               d="M11 4a7 7 0 1 0 4.95 11.95L20 20"
               fill="none"
               stroke="currentColor"
-              stroke-width="1.9"
+              stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
             />
@@ -73,5 +322,12 @@
         </a>
       </div>
     </main>
+
+    <div
+      id="toast-region"
+      class="toast-region"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
   </body>
 </html>
