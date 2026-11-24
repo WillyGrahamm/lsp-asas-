@@ -14,7 +14,6 @@ const DESIGNS = [
       drawerLight: "#ffffff",
       drawerDark: "#111a2b",
     },
-    gsapEase: "power3.out",
   },
   {
     id: "mew",
@@ -29,7 +28,6 @@ const DESIGNS = [
       drawerLight: "#FFFFFF",
       drawerDark: "#23211C",
     },
-    gsapEase: "back.out(1.25)",
   },
   {
     id: "space",
@@ -44,7 +42,6 @@ const DESIGNS = [
       drawerLight: "#FAF4DF",
       drawerDark: "#1D2C3A",
     },
-    gsapEase: "power4.out",
   },
 ];
 
@@ -574,6 +571,10 @@ function syncDesignUI(designId) {
   syncThemeColor();
 }
 
+function notifyLayoutChanged() {
+  document.dispatchEvent(new CustomEvent("gadgetverse:layout-changed"));
+}
+
 function setDesign(designId, { animate = false, announce = false } = {}) {
   const config = getDesignConfig(designId);
   const changed = getActiveDesignId() !== config.id;
@@ -584,6 +585,10 @@ function setDesign(designId, { animate = false, announce = false } = {}) {
 
   safeStorageSet(DESIGN_STORAGE_KEY, config.id);
   syncDesignUI(config.id);
+
+  if (changed) {
+    notifyLayoutChanged();
+  }
 
   if (announce && changed) {
     showCartToast(`Desain tampilan diubah ke ${config.name}`);
@@ -849,22 +854,27 @@ function getProducts(daftarProduk, elemenProduk) {
     });
 
     const desk = document.createElement("div");
+    desk.id = `spec-${p.ticker}`;
     desk.classList.add("container-desk");
     desk.hidden = true;
     desk.setAttribute("aria-expanded", "false");
-    desk.textContent = `Dilengkapi dengan ${p.tags.join(", ")} `;
+    desk.textContent = `Dilengkapi dengan ${p.tags.join(", ")}`;
 
     const beliSpec = document.createElement("div");
-    beliSpec.dataset.ticker = p.ticker;
+    beliSpec.dataset.id = p.ticker;
     beliSpec.className = "button";
 
     const beli = document.createElement("button");
+    beli.type = "button";
     beli.setAttribute("value", "hlight");
-    beli.dataset.ticker = p.ticker;
+    beli.dataset.id = p.ticker;
     beli.textContent = "Beli Sekarang";
 
     const spec = document.createElement("button");
+    spec.type = "button";
     spec.setAttribute("value", "nhlight");
+    spec.setAttribute("aria-expanded", "false");
+    spec.setAttribute("aria-controls", desk.id);
     spec.textContent = "Spesifikasi";
 
     kategori.append(dalamKategori1, dalamKategori2);
@@ -892,6 +902,7 @@ const searchResults = document.getElementById("search-results");
 const categoryFilters = document.getElementById("category-filters");
 let activeCategory = "all";
 let keranjang = [];
+let hasRenderedCatalogOnce = false;
 const addedButtonTimers = new WeakMap();
 
 function formatHarga(harga) {
@@ -930,7 +941,7 @@ function renderCategoryFilters() {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "category-filter";
-    button.dataset.category = value;
+    button.dataset.kategori = value;
     button.setAttribute("aria-pressed", String(value === activeCategory));
     button.textContent = label;
     fragment.appendChild(button);
@@ -952,39 +963,18 @@ function syncBrandSelectionUI() {
   });
 }
 
-function animateProductCards() {
+function setCatalogCardIndices() {
   if (!elemenProduk) return;
-  const cards = elemenProduk.querySelectorAll(".card");
-  cards.forEach((card, index) => {
+  elemenProduk.querySelectorAll(".card").forEach((card, index) => {
     card.style.setProperty("--card-index", String(index));
   });
-
-  if (
-    window.gsap &&
-    window.matchMedia("(prefers-reduced-motion: no-preference)").matches &&
-    cards.length > 0
-  ) {
-    const activeDesign = getDesignConfig(getActiveDesignId());
-    const isMew = activeDesign.id === "mew";
-    window.gsap.fromTo(
-      cards,
-      isMew ? { y: 22, opacity: 0, scale: 0.97 } : { y: 20, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        ...(isMew ? { scale: 1, duration: 0.5 } : { duration: 0.45 }),
-        stagger: 0.055,
-        ease: activeDesign.gsapEase,
-        clearProps: "transform,opacity",
-      },
-    );
-  }
 }
 
-function renderFilteredProducts() {
+function renderFilteredProducts(rawQuery = cari ? cari.value : "") {
   if (!elemenProduk || !cari || !searchResults) return;
 
-  const input = cari.value.trim().toLocaleLowerCase("id-ID");
+  const trimmedQuery = rawQuery.trim();
+  const input = trimmedQuery.toLocaleLowerCase("id-ID");
   const keywords = input.split(/\s+/).filter(Boolean);
   const hasilFilter = productsData.filter((product) => {
     const searchableText = [
@@ -1013,7 +1003,7 @@ function renderFilteredProducts() {
   elemenProduk.textContent = "";
   searchResults.textContent = `Menampilkan ${hasilFilter.length} dari ${productsData.length} produk${
     activeCategory !== "all" ? ` · ${activeCategory}` : ""
-  }${input ? ` · pencarian "${cari.value.trim()}"` : ""}`;
+  }${input ? ` · pencarian "${trimmedQuery}"` : ""}`;
 
   if (hasilFilter.length === 0) {
     const notFound = document.createElement("p");
@@ -1025,22 +1015,45 @@ function renderFilteredProducts() {
     elemenProduk.appendChild(notFound);
   } else {
     getProducts(hasilFilter, elemenProduk);
-    animateProductCards();
+    setCatalogCardIndices();
   }
+
+  const isFilterUpdate = hasRenderedCatalogOnce;
+  hasRenderedCatalogOnce = true;
 
   syncBrandSelectionUI();
   updateDocumentTitle();
+
+  document.dispatchEvent(
+    new CustomEvent("gadgetverse:catalog-rendered", {
+      detail: { isFilterUpdate, count: hasilFilter.length },
+    }),
+  );
 }
 
-function handleSearch() {
-  renderFilteredProducts();
+function handleSearch(event) {
+  renderFilteredProducts(event.target.value);
+}
+
+function handleSearchFocus(event) {
+  const inputWrapper = event.target.closest(".live-input");
+  if (inputWrapper) {
+    inputWrapper.classList.add("is-focused");
+  }
+}
+
+function handleSearchBlur(event) {
+  const inputWrapper = event.target.closest(".live-input");
+  if (inputWrapper) {
+    inputWrapper.classList.remove("is-focused");
+  }
 }
 
 function handleCategoryFilter(event) {
-  const button = event.target.closest("button[data-category]");
+  const button = event.target.closest("button[data-kategori]");
   if (!button || !categoryFilters) return;
 
-  activeCategory = button.dataset.category;
+  activeCategory = button.dataset.kategori;
   categoryFilters
     .querySelectorAll(".category-filter")
     .forEach((filterButton) => {
@@ -1069,7 +1082,7 @@ function handleBrandFilter(event) {
     .forEach((filterButton) => {
       filterButton.setAttribute(
         "aria-pressed",
-        String(filterButton.dataset.category === "all"),
+        String(filterButton.dataset.kategori === "all"),
       );
     });
 
@@ -1166,7 +1179,7 @@ function renderKeranjang() {
     const kurang = document.createElement("button");
     kurang.type = "button";
     kurang.dataset.cartAction = "decrease";
-    kurang.dataset.ticker = product.ticker;
+    kurang.dataset.id = product.ticker;
     kurang.setAttribute("aria-label", `Kurangi ${product.nama}`);
     kurang.textContent = "−";
 
@@ -1177,7 +1190,7 @@ function renderKeranjang() {
     const tambah = document.createElement("button");
     tambah.type = "button";
     tambah.dataset.cartAction = "increase";
-    tambah.dataset.ticker = product.ticker;
+    tambah.dataset.id = product.ticker;
     tambah.setAttribute("aria-label", `Tambah ${product.nama}`);
     tambah.textContent = "+";
 
@@ -1185,7 +1198,7 @@ function renderKeranjang() {
     hapus.type = "button";
     hapus.className = "cart-remove";
     hapus.dataset.cartAction = "remove";
-    hapus.dataset.ticker = product.ticker;
+    hapus.dataset.id = product.ticker;
     hapus.setAttribute("aria-label", `Hapus ${product.nama} dari keranjang`);
 
     const ikonHapus = document.createElementNS(
@@ -1282,7 +1295,7 @@ function handleBeli(event) {
   const button = event.target.closest('button[value="hlight"]');
   if (!button) return;
 
-  const beliTerpilih = button.dataset.ticker;
+  const beliTerpilih = button.dataset.id;
   const produkTerpilih = productsData.find(
     (item) => item.ticker === beliTerpilih,
   );
@@ -1356,17 +1369,17 @@ function handleCartQuantity(event) {
   if (!tombol) return;
 
   const itemKeranjang = keranjang.find(
-    (item) => item.product.ticker === tombol.dataset.ticker,
+    (item) => item.product.ticker === tombol.dataset.id,
   );
   if (!itemKeranjang) return;
 
   if (tombol.dataset.cartAction === "remove") {
-    animateCartItemRemoval(tombol.closest(".cart-item"), tombol.dataset.ticker);
+    animateCartItemRemoval(tombol.closest(".cart-item"), tombol.dataset.id);
     return;
   }
 
   if (tombol.dataset.cartAction === "decrease" && itemKeranjang.quantity === 1) {
-    animateCartItemRemoval(tombol.closest(".cart-item"), tombol.dataset.ticker);
+    animateCartItemRemoval(tombol.closest(".cart-item"), tombol.dataset.id);
     return;
   }
 
@@ -1395,6 +1408,7 @@ function handleDeskripsi(event) {
   const deskTerbuka = !deskTerpilih.hidden;
   button.setAttribute("aria-expanded", String(deskTerbuka));
   deskTerpilih.setAttribute("aria-expanded", String(deskTerbuka));
+  notifyLayoutChanged();
 }
 
 function handleAllCard(event) {
@@ -1431,76 +1445,19 @@ function handleFaqToggle(event) {
   const willExpand = trigger.getAttribute("aria-expanded") !== "true";
   trigger.setAttribute("aria-expanded", String(willExpand));
   answer.hidden = !willExpand;
-}
-
-function initScrollAnimations() {
-  const prefersReduced = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
-  ).matches;
-  const revealTargets = document.querySelectorAll("[data-reveal]");
-
-  if (revealTargets.length === 0) return;
-
-  if (prefersReduced || !("IntersectionObserver" in window)) {
-    revealTargets.forEach((el) => el.classList.add("is-revealed"));
-    return;
-  }
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const target = entry.target;
-        target.classList.add("is-revealed");
-
-        if (window.gsap) {
-          const activeDesign = getDesignConfig(getActiveDesignId());
-          window.gsap.fromTo(
-            target,
-            { y: 24, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: activeDesign.id === "mew" ? 0.62 : 0.6,
-              ease: activeDesign.id === "mew" ? "back.out(1.15)" : activeDesign.gsapEase,
-              clearProps: "transform,opacity",
-            },
-          );
-        }
-        observer.unobserve(target);
-      });
-    },
-    { threshold: 0.12, rootMargin: "0px 0px -30px 0px" },
-  );
-
-  revealTargets.forEach((target) => observer.observe(target));
-
-  if (window.gsap) {
-    const activeDesign = getDesignConfig(getActiveDesignId());
-    window.gsap.fromTo(
-      ".hero-content > *, .hero-gadget",
-      { y: activeDesign.id === "mew" ? 20 : 18, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.65,
-        stagger: 0.08,
-        ease: activeDesign.id === "mew" ? "back.out(1.2)" : activeDesign.gsapEase,
-        clearProps: "transform,opacity",
-      },
-    );
-  }
+  notifyLayoutChanged();
 }
 
 document.addEventListener("keydown", handleDocumentKeydown);
 
 if (totalElemen && elemenProduk && cari && categoryFilters) {
   brandTicker(brandsData, totalElemen);
-  getProducts(productsData, elemenProduk);
   renderCategoryFilters();
   renderFilteredProducts();
 
   cari.addEventListener("input", handleSearch);
+  cari.addEventListener("focus", handleSearchFocus);
+  cari.addEventListener("blur", handleSearchBlur);
   categoryFilters.addEventListener("click", handleCategoryFilter);
   totalElemen.addEventListener("click", handleBrandFilter);
   elemenProduk.addEventListener("click", handleAllCard);
@@ -1523,5 +1480,3 @@ if (heroActions) {
 if (faqContainer) {
   faqContainer.addEventListener("click", handleFaqToggle);
 }
-
-window.addEventListener("DOMContentLoaded", initScrollAnimations);

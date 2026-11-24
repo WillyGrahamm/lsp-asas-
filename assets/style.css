@@ -2074,6 +2074,14 @@ html[data-design="mew"] .cloud-bubble h2 {
   line-height: 1.2;
 }
 
+.live-input {
+  transition: transform 0.2s ease;
+}
+
+.live-input.is-focused {
+  transform: translateY(-1px);
+}
+
 .live-input input {
   width: 100%;
   padding: 15px 18px;
@@ -2116,7 +2124,6 @@ html[data-design="mew"] .live-input input::placeholder {
 html[data-design="mew"] .live-input input:focus {
   border-color: #1e1e1e;
   box-shadow: 0 0 0 4px rgba(30, 30, 30, 0.18);
-  transform: translateY(-1px);
 }
 
 html[data-design="mew"][data-theme="dark"] .live-input input {
@@ -2274,12 +2281,12 @@ html[data-design="mew"] .card:has(.container-desk:not([hidden])) {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .card {
+  html:not(.has-gsap) .card {
     animation: card-reveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) backwards;
     animation-delay: calc(min(var(--card-index, 0), 8) * 50ms);
   }
 
-  html[data-design="mew"] .card {
+  html:not(.has-gsap)[data-design="mew"] .card {
     animation-timing-function: cubic-bezier(0.34, 1.4, 0.64, 1);
   }
 }
@@ -5030,7 +5037,8 @@ html[data-design="space"] .not-found-btn.secondary {
   .cart-drawer,
   .store-toast,
   .design-panel,
-  .design-toggle-chevron {
+  .design-toggle-chevron,
+  .live-input {
     transition-property: background-color, border-color, color, opacity;
   }
 
